@@ -24,7 +24,12 @@ BEGIN
 		BEGIN TRANSACTION
 
 			DECLARE @FechaHoy DATE = CAST(GETDATE() AS DATE)
+			DECLARE @FilasInsertadas INT;
+			DECLARE @FilasEliminadas INT;
+
 			TRUNCATE TABLE CONSOLIDADO_KARDEX.dbo.PreciosTiendasCompras;
+
+			SELECT @FilasEliminadas = @@ROWCOUNT;
 
 			INSERT INTO CONSOLIDADO_KARDEX.dbo.PreciosTiendasCompras (Sucursal, Referencia, CostProm, Fecha)
 			SELECT 'JOCKEY' AS Sucursal, REFERENCIA, AVG(CostProm), CAST(FECHAALBARAN AS DATE) AS Fecha
@@ -101,6 +106,8 @@ BEGIN
 			FROM [172.16.17.250].[PERU_Frontrest].dbo.vw_MINKA_PrecioCompras
 			GROUP BY REFERENCIA, FECHAALBARAN
 
+			SET @FilasInsertadas = @@ROWCOUNT;
+			PRINT ' ------> Filas Insertadas: ' + CAST(@FilasInsertadas - @FilasEliminadas AS VARCHAR(20));
 		COMMIT TRANSACTION;
 	END TRY
 	BEGIN CATCH

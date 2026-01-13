@@ -16,9 +16,14 @@ BEGIN
     BEGIN TRY
         BEGIN TRAN;
 
-        DELETE 
+		DECLARE @FilasInsertadas INT;
+		DECLARE @FilasEliminadas INT;
+        
+		DELETE 
         FROM CONSOLIDADO_KARDEX.dbo.VentasPorProducto
         WHERE Fecha = @FechaHoy;
+
+		SELECT @FilasEliminadas = @@ROWCOUNT;
 
         INSERT INTO CONSOLIDADO_KARDEX.dbo.VentasPorProducto
                (Restaurante,
@@ -108,6 +113,9 @@ BEGIN
         SELECT 'PURUCHUCO', *
         FROM [172.16.17.250].PERU_Frontrest.dbo.vw_PURUCHUCO_VentaPorProducto
         WHERE Fecha = @FechaHoy;
+
+		SET @FilasInsertadas = @@ROWCOUNT;
+		PRINT ' ------> Filas Insertadas: ' + CAST(@FilasInsertadas - @FilasEliminadas AS VARCHAR(20));
 
         COMMIT;
     END TRY

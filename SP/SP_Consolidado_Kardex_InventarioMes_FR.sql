@@ -1,5 +1,5 @@
 
-CREATE PROCEDURE SP_InventarioMes_FR
+CREATE OR ALTER PROCEDURE SP_InventarioMes_FR
 -- =============================================
 -- Author:		Adrian Rodriguez
 -- Create date: 2026-01-13
@@ -10,8 +10,13 @@ BEGIN
 	SET NOCOUNT ON;
 	BEGIN TRY
 		BEGIN TRANSACTION
+			DECLARE @FilasInsertadas INT;
+			DECLARE @FilasEliminadas INT;
+
 			DELETE FROM CONSOLIDADO_KARDEX.dbo.InventarioMes
 			WHERE Fecha = CAST(GETDATE() AS DATE);
+
+			SELECT @FilasEliminadas = @@ROWCOUNT;
 
 			WITH Datos AS (
 				SELECT 'JOCKEY'     AS Restaurante, Referencia, Cantidad, Fecha
@@ -78,9 +83,13 @@ BEGIN
 				FROM [172.16.17.250].PERU_Frontrest.dbo.vw_SJL_Cantidad
 			)
 			INSERT INTO [dbo].[InventarioMes] ([Restaurante],[Referencia],[Cantidad],[Fecha])
-		   SELECT *
+			SELECT *
 			FROM Datos
 			WHERE Fecha = CAST(GETDATE() AS DATE)
+
+			SET @FilasInsertadas = @@ROWCOUNT;
+			PRINT ' ------> Filas Insertadas: ' + CAST(@FilasInsertadas - @FilasEliminadas AS VARCHAR(20));
+
 		COMMIT TRANSACTION
 	END TRY
 	BEGIN CATCH

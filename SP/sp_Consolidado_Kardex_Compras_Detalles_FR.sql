@@ -1,7 +1,7 @@
 USE [CONSOLIDADO_KARDEX]
 GO
 
-/****** Object:  StoredProcedure [dbo].[SP_Compras_Detalles_FR]    Script Date: 1/13/2026 11:05:38 AM ******/
+/****** Object:  StoredProcedure [dbo].[SP_Compras_Detalles_FR]    Script Date: 1/13/2026 2:47:12 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -9,7 +9,9 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-CREATE OR ALTER PROCEDURE [dbo].[SP_Compras_Detalles_FR] 
+
+
+CREATE OR ALTER     PROCEDURE [dbo].[SP_Compras_Detalles_FR] 
 -- Author:		Adrian Rodriguez
 -- Create date: 2026-01-01
 -- Description:	Consolidado Kardex Peru
@@ -22,6 +24,7 @@ BEGIN
 	BEGIN TRY
 		BEGIN TRANSACTION 
 		DECLARE @FechaHoy DATE = CAST(GETDATE() AS DATE);
+		DECLARE @FilasAfectadas INT;
 
 		DELETE FROM [CONSOLIDADO_KARDEX].[dbo].[Compras_Detalle]
 		WHERE Fecha = @FechaHoy
@@ -110,6 +113,18 @@ BEGIN
 		FROM [172.16.17.250].PERU_Frontrest.dbo.vw_PARDO_Compras t0
 		WHERE t0.Fecha = @FechaHoy
 
+		UNION ALL
+		SELECT 'ROSEDAL' AS Restaurante, *
+		FROM [172.16.17.250].PERU_Frontrest.dbo.vw_ROSEDAL_Compras t0
+		WHERE t0.Fecha = @FechaHoy
+
+		UNION ALL
+		SELECT 'PURUCHUCO' AS Restaurante, *
+		FROM [172.16.17.250].PERU_Frontrest.dbo.vw_PURUCHUCO_Compras t0
+		WHERE t0.Fecha = @FechaHoy
+
+		SET @FilasAfectadas = @@ROWCOUNT;
+		PRINT 'Filas eliminadas: ' + CAST(@FilasAfectadas AS VARCHAR(20));
 		COMMIT TRANSACTION;
 	END TRY
 
@@ -120,5 +135,8 @@ BEGIN
     END CATCH
 END
 
+
+
+GO
 
 

@@ -22,8 +22,13 @@ BEGIN
 	BEGIN TRY
 		BEGIN TRANSACTION
 			DECLARE @FechaHoy DATE = CAST(GETDATE() AS DATE)
+			DECLARE @FilasInsertadas INT;
+			DECLARE @FilasEliminadas INT;
+
 			DELETE FROM CONSOLIDADO_KARDEX.dbo.TrasladoSalientes
 			WHERE Fecha =@FechaHoy
+			
+			SELECT @FilasEliminadas = @@ROWCOUNT;
 
 			INSERT INTO CONSOLIDADO_KARDEX.dbo.[TrasladoSalientes]
 			   ([Restaurante]
@@ -115,6 +120,10 @@ BEGIN
 			SELECT 'PURUCHUCO' AS Restaurante, *
 			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_PURUCHUCO_TrasladosSalientes t0
 			WHERE t0.Fecha =@FechaHoy
+
+			SET @FilasInsertadas = @@ROWCOUNT;
+			PRINT ' ------> Filas Insertadas: ' + CAST(@FilasInsertadas - @FilasEliminadas AS VARCHAR(20));
+
 		COMMIT TRANSACTION;
 	END TRY
 
