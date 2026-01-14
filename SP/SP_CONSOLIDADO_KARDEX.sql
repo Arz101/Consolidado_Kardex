@@ -9,6 +9,19 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
+    IF EXISTS (
+        SELECT 1
+        FROM sys.dm_exec_sessions s
+        JOIN sys.dm_exec_requests r ON s.session_id = r.session_id
+        CROSS APPLY sys.dm_exec_sql_text(r.sql_handle) t
+        WHERE t.text LIKE '%SP_CONSOLIDADO_KARDEX%'
+          AND s.session_id <> @@SPID
+    )
+    BEGIN
+        RAISERROR('SP_CONSOLIDADO_KARDEX ya está en ejecución. Cancelando.', 0, 1) WITH NOWAIT;
+        RETURN;
+    END;
+
     BEGIN TRY
 
         RAISERROR('Iniciando SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
