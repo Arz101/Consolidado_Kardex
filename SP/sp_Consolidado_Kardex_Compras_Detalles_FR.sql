@@ -12,6 +12,7 @@ GO
 
 
 CREATE OR ALTER     PROCEDURE [dbo].[SP_Compras_Detalles_FR] 
+-- =============================================
 -- Author:		Adrian Rodriguez
 -- Create date: 2026-01-01
 -- Description:	Consolidado Kardex Peru
@@ -23,113 +24,215 @@ BEGIN
 
 	BEGIN TRY
 		BEGIN TRANSACTION 
-		DECLARE @FechaHoy DATE = CAST(GETDATE() AS DATE);
-		DECLARE @FilasAfectadas INT;
+			DECLARE @FechaHoy DATE = CAST(GETDATE() AS DATE);
+			DECLARE @FilasAfectadas INT;
 
-		DELETE FROM [CONSOLIDADO_KARDEX].[dbo].[Compras_Detalle]
-		WHERE Fecha = @FechaHoy
+			DELETE FROM [CONSOLIDADO_KARDEX].[dbo].[Compras_Detalle]
+			WHERE Fecha = @FechaHoy
 
-		INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle
-           ([Restaurante]
-           ,[Fecha]
-           ,[Factura]
-           ,[No.Entrada]
-           ,[Proveedor]
-           ,[CodigoArticuloFR]
-           ,[ArticuloFR]
-           ,[Unidades]
-           ,[Cantidad]
-           ,[PrecioCompras]
-           ,[SubTotal]
-           ,[IV]
-           ,[Neto]
-           ,[CODPROVEEDOR])
-		SELECT 'CANADA' AS Restaurante, *
-		FROM [172.16.17.250].PERU_Frontrest.dbo.vw_CANADA_Compras t0
-		WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY 
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle
+					([Restaurante],[Fecha],[Factura],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR],[Unidades]
+					,[Cantidad],[PrecioCompras],[SubTotal],[IV],[Neto],[CODPROVEEDOR])
+				SELECT 'CANADA' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_CANADA_Compras t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+        		RAISERROR('           * CANADA NO DISPONIBLE     SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
+			END CATCH 
 
-		UNION ALL
-		SELECT 'P&A' AS Restaurante, *
-		FROM [172.16.17.250].PERU_Frontrest.dbo.sw_PARDOYALIAGA_Compras t0
-		WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle
+					([Restaurante],[Fecha],[Factura],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR],[Unidades]
+					,[Cantidad],[PrecioCompras],[SubTotal],[IV],[Neto],[CODPROVEEDOR])
+				SELECT 'P&A' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.sw_PARDOYALIAGA_Compras t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY 
+			BEGIN CATCH
+        		RAISERROR('           * P&A NO DISPONIBLE     SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
+			END CATCH 
 
-		UNION ALL
-		SELECT 'PLAZA NORTE' AS Restaurante, *
-		FROM [172.16.17.250].PERU_Frontrest.dbo.vw_PLAZA_NORTE_Compras t0
-		WHERE t0.Fecha = @FechaHoy
 
-		UNION ALL
-		SELECT 'MDS' AS Restaurante, *
-		FROM [172.16.17.250].PERU_Frontrest.dbo.sw_MALLSUR_Compras t0
-		WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle
+					([Restaurante],[Fecha],[Factura],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR],[Unidades]
+					,[Cantidad],[PrecioCompras],[SubTotal],[IV],[Neto],[CODPROVEEDOR])
+				SELECT 'PLAZA NORTE' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_PLAZA_NORTE_Compras t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+        		RAISERROR('           * PZ NO DISPONIBLE     SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
+			END CATCH 
 
-		UNION ALL
-		SELECT 'C. CIVICO' AS Restaurante, *
-		FROM [172.16.17.250].PERU_Frontrest.dbo.vw_CENTROCIVICO_Compras t0
-		WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle
+					([Restaurante],[Fecha],[Factura],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR],[Unidades]
+					,[Cantidad],[PrecioCompras],[SubTotal],[IV],[Neto],[CODPROVEEDOR])
+				SELECT 'MDS' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.sw_MALLSUR_Compras t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+        		RAISERROR('           * MDS NO DISPONIBLE     SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
+			END CATCH 
 
-		UNION ALL
-		SELECT 'SALAVERRY' AS Restaurante, *
-		FROM [172.16.17.250].PERU_Frontrest.dbo.vw_SALAVERRY_Compras t0
-		WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle
+					([Restaurante],[Fecha],[Factura],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR],[Unidades]
+					,[Cantidad],[PrecioCompras],[SubTotal],[IV],[Neto],[CODPROVEEDOR])
+				SELECT 'C. CIVICO' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_CENTROCIVICO_Compras t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+        		RAISERROR('           * C.CIVICO NO DISPONIBLE     SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
+			END CATCH 
 
-		UNION ALL
-		SELECT 'FONTANA' AS Restaurante, *
-		FROM [172.16.17.250].PERU_Frontrest.dbo.vw_FONTANA_Compras t0
-		WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle
+					([Restaurante],[Fecha],[Factura],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR],[Unidades]
+					,[Cantidad],[PrecioCompras],[SubTotal],[IV],[Neto],[CODPROVEEDOR])			
+				SELECT 'SALAVERRY' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_SALAVERRY_Compras t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+        		RAISERROR('           * SALAVERRY NO DISPONIBLE     SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
+			END CATCH 
 
-		UNION ALL
-		SELECT 'AREQUIPA' AS Restaurante, *
-		FROM [172.16.17.250].PERU_Frontrest.dbo.vw_AREQUIPA_Compras t0
-		WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle
+					([Restaurante],[Fecha],[Factura],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR],[Unidades]
+					,[Cantidad],[PrecioCompras],[SubTotal],[IV],[Neto],[CODPROVEEDOR])	
+				SELECT 'FONTANA' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_FONTANA_Compras t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+        		RAISERROR('           * FONTANA NO DISPONIBLE     SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
+			END CATCH 
 
-		UNION ALL
-		SELECT 'MINKA' AS Restaurante, *
-		FROM [172.16.17.250].PERU_Frontrest.dbo.vw_MINKA_Compras t0
-		WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle
+					([Restaurante],[Fecha],[Factura],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR],[Unidades]
+					,[Cantidad],[PrecioCompras],[SubTotal],[IV],[Neto],[CODPROVEEDOR])	
+				SELECT 'AREQUIPA' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_AREQUIPA_Compras t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+        		RAISERROR('           * AREQUIPA NO DISPONIBLE     SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
+			END CATCH 
 
-		UNION ALL
-		SELECT 'BENAVIDES' AS Restaurante, *
-		FROM [172.16.17.250].PERU_Frontrest.dbo.vw_BENAVIDES_Compras t0
-		WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle
+					([Restaurante],[Fecha],[Factura],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR],[Unidades]
+					,[Cantidad],[PrecioCompras],[SubTotal],[IV],[Neto],[CODPROVEEDOR])				
+				SELECT 'MINKA' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_MINKA_Compras t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+        		RAISERROR('           * MINKA NO DISPONIBLE     SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
+			END CATCH 
 
-		UNION ALL
-		SELECT 'CHILCLAYO' AS Restaurante, *
-		FROM [172.16.17.250].PERU_Frontrest.dbo.vw_CHILCLAYO_Compras t0
-		WHERE t0.Fecha = @FechaHoy
 
-		UNION ALL
-		SELECT 'JOCKEY' AS Restaurante, *
-		FROM [172.16.17.250].PERU_Frontrest.dbo.vw_JOCKEY__Compras t0
-		WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle
+					([Restaurante],[Fecha],[Factura],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR],[Unidades]
+					,[Cantidad],[PrecioCompras],[SubTotal],[IV],[Neto],[CODPROVEEDOR])		
+				SELECT 'BENAVIDES' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_BENAVIDES_Compras t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+        		RAISERROR('           * BENAVIDES NO DISPONIBLE     SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
+			END CATCH 
 
-		UNION ALL
-		SELECT 'SJL' AS Restaurante, *
-		FROM [172.16.17.250].PERU_Frontrest.dbo.vw_SJL_Compras t0
-		WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle
+					([Restaurante],[Fecha],[Factura],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR],[Unidades]
+					,[Cantidad],[PrecioCompras],[SubTotal],[IV],[Neto],[CODPROVEEDOR])
+				SELECT 'CHILCLAYO' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_CHILCLAYO_Compras t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+        		RAISERROR('           * CHICLAYO NO DISPONIBLE     SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
+			END CATCH 
 
-		UNION ALL
-		SELECT 'PARDO' AS Restaurante, *
-		FROM [172.16.17.250].PERU_Frontrest.dbo.vw_PARDO_Compras t0
-		WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle
+					([Restaurante],[Fecha],[Factura],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR],[Unidades]
+					,[Cantidad],[PrecioCompras],[SubTotal],[IV],[Neto],[CODPROVEEDOR])
+				SELECT 'JOCKEY' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_JOCKEY__Compras t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+        		RAISERROR('           * JOCKEY NO DISPONIBLE     SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
+			END CATCH 
 
-		UNION ALL
-		SELECT 'ROSEDAL' AS Restaurante, *
-		FROM [172.16.17.250].PERU_Frontrest.dbo.vw_ROSEDAL_Compras t0
-		WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle
+					([Restaurante],[Fecha],[Factura],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR],[Unidades]
+					,[Cantidad],[PrecioCompras],[SubTotal],[IV],[Neto],[CODPROVEEDOR])
+				SELECT 'SJL' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_SJL_Compras t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+        		RAISERROR('           * SJL NO DISPONIBLE     SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
+			END CATCH 
 
-		UNION ALL
-		SELECT 'PURUCHUCO' AS Restaurante, *
-		FROM [172.16.17.250].PERU_Frontrest.dbo.vw_PURUCHUCO_Compras t0
-		WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle
+					([Restaurante],[Fecha],[Factura],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR],[Unidades]
+					,[Cantidad],[PrecioCompras],[SubTotal],[IV],[Neto],[CODPROVEEDOR])
+				SELECT 'PARDO' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_PARDO_Compras t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+        		RAISERROR('           * PARDO NO DISPONIBLE     SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
+			END CATCH 
 
-		SET @FilasAfectadas = @@ROWCOUNT;
-		PRINT 'Filas eliminadas: ' + CAST(@FilasAfectadas AS VARCHAR(20));
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle
+					([Restaurante],[Fecha],[Factura],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR],[Unidades]
+					,[Cantidad],[PrecioCompras],[SubTotal],[IV],[Neto],[CODPROVEEDOR])
+				SELECT 'ROSEDAL' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_ROSEDAL_Compras t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+        		RAISERROR('           * ROSEDAL NO DISPONIBLE     SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
+			END CATCH 
+
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle
+					([Restaurante],[Fecha],[Factura],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR],[Unidades]
+					,[Cantidad],[PrecioCompras],[SubTotal],[IV],[Neto],[CODPROVEEDOR])
+				SELECT 'PURUCHUCO' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_PURUCHUCO_Compras t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+        		RAISERROR('           * PURUCHUCO NO DISPONIBLE     SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
+			END CATCH 
+
 		COMMIT TRANSACTION;
+
+		PRINT '';
+        PRINT '============================================';
+        PRINT 'PROCESO COMPLETADO EXITOSAMENTE SIN ERRORES';
+        PRINT '============================================';
 	END TRY
 
 	BEGIN CATCH
-	    ROLLBACK TRANSACTION
         IF @@TRANCOUNT > 0 ROLLBACK;
         THROW;
     END CATCH

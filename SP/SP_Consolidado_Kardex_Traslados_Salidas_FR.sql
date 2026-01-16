@@ -22,109 +22,368 @@ BEGIN
 	BEGIN TRY
 		BEGIN TRANSACTION
 			DECLARE @FechaHoy DATE = CAST(GETDATE() AS DATE)
-			DECLARE @FilasInsertadas INT;
-			DECLARE @FilasEliminadas INT;
 
 			DELETE FROM CONSOLIDADO_KARDEX.dbo.TrasladoSalientes
 			WHERE Fecha =@FechaHoy
 			
-			SELECT @FilasEliminadas = @@ROWCOUNT;
+			-- CANADA
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.[TrasladoSalientes]
+				([Restaurante]
+				,[Fecha]
+				,[No.Entrada]
+				,[Destino]
+				,[CodigoArticuloFR]
+				,[ArticuloFR]
+				,[Unidades]
+				,[Cantidad]
+				,[Costo]
+				,[CODALMDEST]
+				,[CODALMORIG])
+				SELECT 'CANADA' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_CANADA_TrasladosSalientes t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				PRINT 'Error en CANADA: ' + ERROR_MESSAGE()
+			END CATCH
 
-			INSERT INTO CONSOLIDADO_KARDEX.dbo.[TrasladoSalientes]
-			   ([Restaurante]
-			   ,[Fecha]
-			   ,[No.Entrada]
-			   ,[Destino]
-			   ,[CodigoArticuloFR]
-			   ,[ArticuloFR]
-			   ,[Unidades]
-			   ,[Cantidad]
-			   ,[Costo]
-			   ,[CODALMDEST]
-			   ,[CODALMORIG])
-			SELECT 'CANADA' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_CANADA_TrasladosSalientes t0
-			WHERE t0.Fecha =@FechaHoy
+			-- P&A
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.[TrasladoSalientes]
+				([Restaurante]
+				,[Fecha]
+				,[No.Entrada]
+				,[Destino]
+				,[CodigoArticuloFR]
+				,[ArticuloFR]
+				,[Unidades]
+				,[Cantidad]
+				,[Costo]
+				,[CODALMDEST]
+				,[CODALMORIG])
+				SELECT 'P&A' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.sw_PARDOYALIAGA_TrasladosSalientes t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				PRINT 'Error en P&A: ' + ERROR_MESSAGE()
+			END CATCH
 
-			UNION ALL
-			SELECT 'P&A' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.sw_PARDOYALIAGA_TrasladosSalientes t0
-			WHERE t0.Fecha =@FechaHoy
+			-- PLAZA NORTE
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.[TrasladoSalientes]
+				([Restaurante]
+				,[Fecha]
+				,[No.Entrada]
+				,[Destino]
+				,[CodigoArticuloFR]
+				,[ArticuloFR]
+				,[Unidades]
+				,[Cantidad]
+				,[Costo]
+				,[CODALMDEST]
+				,[CODALMORIG])
+				SELECT 'PLAZA NORTE' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_PLAZA_NORTE_TrasladosSalientes t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				PRINT 'Error en PLAZA NORTE: ' + ERROR_MESSAGE()
+			END CATCH
 
-			UNION ALL
-			SELECT 'PLAZA NORTE' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_PLAZA_NORTE_TrasladosSalientes t0
-			WHERE t0.Fecha =@FechaHoy
+			-- MDS
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.[TrasladoSalientes]
+				([Restaurante]
+				,[Fecha]
+				,[No.Entrada]
+				,[Destino]
+				,[CodigoArticuloFR]
+				,[ArticuloFR]
+				,[Unidades]
+				,[Cantidad]
+				,[Costo]
+				,[CODALMDEST]
+				,[CODALMORIG])
+				SELECT 'MDS' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.sw_MALLSUR_TrasladosSalientes t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				PRINT 'Error en MDS: ' + ERROR_MESSAGE()
+			END CATCH
 
-			UNION ALL
-			SELECT 'MDS' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.sw_MALLSUR_TrasladosSalientes t0
-			WHERE t0.Fecha =@FechaHoy
+			-- C. CIVICO
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.[TrasladoSalientes]
+				([Restaurante]
+				,[Fecha]
+				,[No.Entrada]
+				,[Destino]
+				,[CodigoArticuloFR]
+				,[ArticuloFR]
+				,[Unidades]
+				,[Cantidad]
+				,[Costo]
+				,[CODALMDEST]
+				,[CODALMORIG])
+				SELECT 'C. CIVICO' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_CENTROCIVICO_TrasladosSalientes t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				PRINT 'Error en C. CIVICO: ' + ERROR_MESSAGE()
+			END CATCH
 
-			UNION ALL
-			SELECT 'C. CIVICO' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_CENTROCIVICO_TrasladosSalientes t0
-			WHERE t0.Fecha =@FechaHoy
+			-- SALAVERRY
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.[TrasladoSalientes]
+				([Restaurante]
+				,[Fecha]
+				,[No.Entrada]
+				,[Destino]
+				,[CodigoArticuloFR]
+				,[ArticuloFR]
+				,[Unidades]
+				,[Cantidad]
+				,[Costo]
+				,[CODALMDEST]
+				,[CODALMORIG])
+				SELECT 'SALAVERRY' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_SALAVERRY_TrasladosSalientes t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				PRINT 'Error en SALAVERRY: ' + ERROR_MESSAGE()
+			END CATCH
 
-			UNION ALL
-			SELECT 'SALAVERRY' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_SALAVERRY_TrasladosSalientes t0
-			WHERE t0.Fecha =@FechaHoy
+			-- FONTANA
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.[TrasladoSalientes]
+				([Restaurante]
+				,[Fecha]
+				,[No.Entrada]
+				,[Destino]
+				,[CodigoArticuloFR]
+				,[ArticuloFR]
+				,[Unidades]
+				,[Cantidad]
+				,[Costo]
+				,[CODALMDEST]
+				,[CODALMORIG])
+				SELECT 'FONTANA' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_FONTANA_TrasladosSalientes t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				PRINT 'Error en FONTANA: ' + ERROR_MESSAGE()
+			END CATCH
 
-			UNION ALL
-			SELECT 'FONTANA' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_FONTANA_TrasladosSalientes t0
-			WHERE t0.Fecha =@FechaHoy
+			-- AREQUIPA
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.[TrasladoSalientes]
+				([Restaurante]
+				,[Fecha]
+				,[No.Entrada]
+				,[Destino]
+				,[CodigoArticuloFR]
+				,[ArticuloFR]
+				,[Unidades]
+				,[Cantidad]
+				,[Costo]
+				,[CODALMDEST]
+				,[CODALMORIG])
+				SELECT 'AREQUIPA' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_AREQUIPA_TrasladosSalientes t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				PRINT 'Error en AREQUIPA: ' + ERROR_MESSAGE()
+			END CATCH
 
-			UNION ALL
-			SELECT 'AREQUIPA' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_AREQUIPA_TrasladosSalientes t0
-			WHERE t0.Fecha =@FechaHoy
+			-- MINKA
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.[TrasladoSalientes]
+				([Restaurante]
+				,[Fecha]
+				,[No.Entrada]
+				,[Destino]
+				,[CodigoArticuloFR]
+				,[ArticuloFR]
+				,[Unidades]
+				,[Cantidad]
+				,[Costo]
+				,[CODALMDEST]
+				,[CODALMORIG])
+				SELECT 'MINKA' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_MINKA_TrasladosSalientes t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				PRINT 'Error en MINKA: ' + ERROR_MESSAGE()
+			END CATCH
 
-			UNION ALL
-			SELECT 'MINKA' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_MINKA_TrasladosSalientes t0
-			WHERE t0.Fecha =@FechaHoy
+			-- BENAVIDES
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.[TrasladoSalientes]
+				([Restaurante]
+				,[Fecha]
+				,[No.Entrada]
+				,[Destino]
+				,[CodigoArticuloFR]
+				,[ArticuloFR]
+				,[Unidades]
+				,[Cantidad]
+				,[Costo]
+				,[CODALMDEST]
+				,[CODALMORIG])
+				SELECT 'BENAVIDES' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_BENAVIDES_TrasladosSalientes t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				PRINT 'Error en BENAVIDES: ' + ERROR_MESSAGE()
+			END CATCH
 
-			UNION ALL
-			SELECT 'BENAVIDES' AS Restaurante, *
-			FROM[172.16.17.250].PERU_Frontrest.dbo.vw_BENAVIDES_TrasladosSalientes t0
-			WHERE t0.Fecha =@FechaHoy
+			-- CHILCLAYO
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.[TrasladoSalientes]
+				([Restaurante]
+				,[Fecha]
+				,[No.Entrada]
+				,[Destino]
+				,[CodigoArticuloFR]
+				,[ArticuloFR]
+				,[Unidades]
+				,[Cantidad]
+				,[Costo]
+				,[CODALMDEST]
+				,[CODALMORIG])
+				SELECT 'CHILCLAYO' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_CHILCLAYO_TrasladosSalientes t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				PRINT 'Error en CHILCLAYO: ' + ERROR_MESSAGE()
+			END CATCH
 
-			UNION ALL
-			SELECT 'CHILCLAYO' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_CHILCLAYO_TrasladosSalientes t0
-			WHERE t0.Fecha =@FechaHoy
+			-- JOCKEY
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.[TrasladoSalientes]
+				([Restaurante]
+				,[Fecha]
+				,[No.Entrada]
+				,[Destino]
+				,[CodigoArticuloFR]
+				,[ArticuloFR]
+				,[Unidades]
+				,[Cantidad]
+				,[Costo]
+				,[CODALMDEST]
+				,[CODALMORIG])
+				SELECT 'JOCKEY' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_JOCKEY_TrasladosSalientes t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				PRINT 'Error en JOCKEY: ' + ERROR_MESSAGE()
+			END CATCH
 
-			UNION ALL
-			SELECT 'JOCKEY' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_JOCKEY_TrasladosSalientes t0
-			WHERE t0.Fecha =@FechaHoy
+			-- SJL
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.[TrasladoSalientes]
+				([Restaurante]
+				,[Fecha]
+				,[No.Entrada]
+				,[Destino]
+				,[CodigoArticuloFR]
+				,[ArticuloFR]
+				,[Unidades]
+				,[Cantidad]
+				,[Costo]
+				,[CODALMDEST]
+				,[CODALMORIG])
+				SELECT 'SJL' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_SJL_TrasladosSalientes t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				PRINT 'Error en SJL: ' + ERROR_MESSAGE()
+			END CATCH
 
-			UNION ALL
-			SELECT 'SJL' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_SJL_TrasladosSalientes t0
-			WHERE t0.Fecha =@FechaHoy
+			-- PARDO
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.[TrasladoSalientes]
+				([Restaurante]
+				,[Fecha]
+				,[No.Entrada]
+				,[Destino]
+				,[CodigoArticuloFR]
+				,[ArticuloFR]
+				,[Unidades]
+				,[Cantidad]
+				,[Costo]
+				,[CODALMDEST]
+				,[CODALMORIG])
+				SELECT 'PARDO' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_PARDO_TrasladosSalientes t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				PRINT 'Error en PARDO: ' + ERROR_MESSAGE()
+			END CATCH
 
-			UNION ALL
-			SELECT 'PARDO' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_PARDO_TrasladosSalientes t0
-			WHERE t0.Fecha =@FechaHoy
+			-- ROSEDAL
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.[TrasladoSalientes]
+				([Restaurante]
+				,[Fecha]
+				,[No.Entrada]
+				,[Destino]
+				,[CodigoArticuloFR]
+				,[ArticuloFR]
+				,[Unidades]
+				,[Cantidad]
+				,[Costo]
+				,[CODALMDEST]
+				,[CODALMORIG])
+				SELECT 'ROSEDAL' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_ROSEDAL_TrasladosSalientes t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				PRINT 'Error en ROSEDAL: ' + ERROR_MESSAGE()
+			END CATCH
 
-			UNION ALL
-			SELECT 'ROSEDAL' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_ROSEDAL_TrasladosSalientes t0
-			WHERE t0.Fecha =@FechaHoy
-
-			UNION ALL
-			SELECT 'PURUCHUCO' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_PURUCHUCO_TrasladosSalientes t0
-			WHERE t0.Fecha =@FechaHoy
-
-			SET @FilasInsertadas = @@ROWCOUNT;
-			PRINT ' ------> Filas Insertadas: ' + CAST(@FilasInsertadas - @FilasEliminadas AS VARCHAR(20));
+			-- PURUCHUCO
+			BEGIN TRY
+				INSERT INTO CONSOLIDADO_KARDEX.dbo.[TrasladoSalientes]
+				([Restaurante]
+				,[Fecha]
+				,[No.Entrada]
+				,[Destino]
+				,[CodigoArticuloFR]
+				,[ArticuloFR]
+				,[Unidades]
+				,[Cantidad]
+				,[Costo]
+				,[CODALMDEST]
+				,[CODALMORIG])
+				SELECT 'PURUCHUCO' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_PURUCHUCO_TrasladosSalientes t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				PRINT 'Error en PURUCHUCO: ' + ERROR_MESSAGE()
+			END CATCH
 
 		COMMIT TRANSACTION;
+
+		PRINT '';
+        PRINT '============================================';
+        PRINT 'PROCESO COMPLETADO EXITOSAMENTE SIN ERRORES';
+        PRINT '============================================';
 	END TRY
 
 	BEGIN CATCH

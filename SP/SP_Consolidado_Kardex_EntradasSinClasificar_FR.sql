@@ -30,106 +30,210 @@ BEGIN
 
 			SELECT @FilasEliminadas = @@ROWCOUNT;
 
-			INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]
-					   ([Restaurante]
-					   ,[Fecha]
-					   ,[Origen]
-					   ,[Destino]
-					   ,[CodigoArtculoFR]
-					   ,[ArticuloFR]
-					   ,[Unidades]
-					   ,[Cantidad]
-					   ,[CostoProm]
-					   ,[Total]
-					   ,[Precio])
-			SELECT 'CANADA' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_CANADA_EntradasSinCalificar t0
-			WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]
+					([Restaurante],[Fecha],[Origen],[Destino],[CodigoArtculoFR],[ArticuloFR],[Unidades]
+						,[Cantidad],[CostoProm],[Total],[Precio])
+				SELECT 'CANADA' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_CANADA_EntradasSinCalificar t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				RAISERROR('           * CANADA NO DISPONIBLE     SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
+			END CATCH
 
-			UNION ALL
-			SELECT 'P&A' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.sw_PARDOYALIAGA_EntradasSinCalificar t0
-			WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]
+					([Restaurante],[Fecha],[Origen],[Destino],[CodigoArtculoFR],[ArticuloFR],[Unidades]
+						,[Cantidad],[CostoProm],[Total],[Precio])	
+				SELECT 'P&A' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.sw_PARDOYALIAGA_EntradasSinCalificar t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				RAISERROR('           * P&A NO DISPONIBLE     SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
+			END CATCH
+			
+			BEGIN TRY
+				INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]
+					([Restaurante],[Fecha],[Origen],[Destino],[CodigoArtculoFR],[ArticuloFR],[Unidades]
+						,[Cantidad],[CostoProm],[Total],[Precio])
+				SELECT 'PZ' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_PLAZA_NORTE_EntradasSinCalificar t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				RAISERROR('           * PZ NO DISPONIBLE     SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
+			END CATCH
 
-			UNION ALL
-			SELECT 'PLAZA NORTE' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_PLAZA_NORTE_EntradasSinCalificar t0
-			WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]
+					([Restaurante],[Fecha],[Origen],[Destino],[CodigoArtculoFR],[ArticuloFR],[Unidades]
+						,[Cantidad],[CostoProm],[Total],[Precio])
+				SELECT 'MDS' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.sw_MALLSUR_EntradasSinCalificar t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				RAISERROR('           * MDS NO DISPONIBLE     SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
+			END CATCH
 
-			UNION ALL
-			SELECT 'MDS' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.sw_MALLSUR_EntradasSinCalificar t0
-			WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]
+					([Restaurante],[Fecha],[Origen],[Destino],[CodigoArtculoFR],[ArticuloFR],[Unidades]
+						,[Cantidad],[CostoProm],[Total],[Precio])
+				SELECT 'C. CIVICO' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_CENTROCIVICO_EntradasSinCalificar t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				RAISERROR('           * C.CIVICO NO DISPONIBLE     SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
+			END CATCH				
 
-			UNION ALL
-			SELECT 'C. CIVICO' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_CENTROCIVICO_EntradasSinCalificar t0
-			WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]
+					([Restaurante],[Fecha],[Origen],[Destino],[CodigoArtculoFR],[ArticuloFR],[Unidades]
+						,[Cantidad],[CostoProm],[Total],[Precio])
+				SELECT 'SALAVERRY' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_SALAVERRY_EntradasSinCalificar t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				RAISERROR('           * SALVAERRY NO DISPONIBLE     SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
+			END CATCH		
 
-			UNION ALL
-			SELECT 'SALAVERRY' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_SALAVERRY_EntradasSinCalificar t0
-			WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]
+					([Restaurante],[Fecha],[Origen],[Destino],[CodigoArtculoFR],[ArticuloFR],[Unidades]
+						,[Cantidad],[CostoProm],[Total],[Precio])
+				SELECT 'FONTANA' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_FONTANA_EntradasSinCalificar t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				RAISERROR('           * FONTANA NO DISPONIBLE     SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
+			END CATCH	
 
-			UNION ALL
-			SELECT 'FONTANA' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_FONTANA_EntradasSinCalificar t0
-			WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]
+					([Restaurante],[Fecha],[Origen],[Destino],[CodigoArtculoFR],[ArticuloFR],[Unidades]
+						,[Cantidad],[CostoProm],[Total],[Precio])
+				SELECT 'AREQUIPA' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_AREQUIPA_EntradasSinCalificar t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				RAISERROR('           * AREQUIPA NO DISPONIBLE     SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
+			END CATCH	
 
-			UNION ALL
-			SELECT 'AREQUIPA' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_AREQUIPA_EntradasSinCalificar t0
-			WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]
+					([Restaurante],[Fecha],[Origen],[Destino],[CodigoArtculoFR],[ArticuloFR],[Unidades]
+						,[Cantidad],[CostoProm],[Total],[Precio])
+				SELECT 'MINKA' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_MINKA_EntradasSinCalificar t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				RAISERROR('           * MINKA NO DISPONIBLE     SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
+			END CATCH
 
-			UNION ALL
-			SELECT 'MINKA' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_MINKA_EntradasSinCalificar t0
-			WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]
+					([Restaurante],[Fecha],[Origen],[Destino],[CodigoArtculoFR],[ArticuloFR],[Unidades]
+						,[Cantidad],[CostoProm],[Total],[Precio])
+				SELECT 'BENAVIDES' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_BENAVIDES_EntradasSinCalificar t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				RAISERROR('           * BENAVIDES NO DISPONIBLE     SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
+			END CATCH
 
-			UNION ALL
-			SELECT 'BENAVIDES' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_BENAVIDES_EntradasSinCalificar t0
-			WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]
+					([Restaurante],[Fecha],[Origen],[Destino],[CodigoArtculoFR],[ArticuloFR],[Unidades]
+						,[Cantidad],[CostoProm],[Total],[Precio])
+				SELECT 'CHILCLAYO' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_CHILCLAYO_EntradasSinCalificar t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				RAISERROR('           * CHICLAYO NO DISPONIBLE     SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
+			END CATCH
 
-			UNION ALL
-			SELECT 'CHILCLAYO' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_CHILCLAYO_EntradasSinCalificar t0
-			WHERE t0.Fecha = @FechaHoy
 
-			UNION ALL
-			SELECT 'JOCKEY' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_JOCKEY_EntradasSinCalificar t0
-			WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]
+					([Restaurante],[Fecha],[Origen],[Destino],[CodigoArtculoFR],[ArticuloFR],[Unidades]
+						,[Cantidad],[CostoProm],[Total],[Precio])
+				SELECT 'JOCKEY' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_JOCKEY_EntradasSinCalificar t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				RAISERROR('           * JOCKEY NO DISPONIBLE     SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
+			END CATCH
 
-			UNION ALL
-			SELECT 'SJL' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_SJL_EntradasSinCalificar t0
-			WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]
+					([Restaurante],[Fecha],[Origen],[Destino],[CodigoArtculoFR],[ArticuloFR],[Unidades]
+						,[Cantidad],[CostoProm],[Total],[Precio])
+				SELECT 'SJL' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_SJL_EntradasSinCalificar t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				RAISERROR('           * SJL NO DISPONIBLE     SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
+			END CATCH
 
-			UNION ALL
-			SELECT 'PARDO' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_PARDO_EntradasSinCalificar t0
-			WHERE t0.Fecha = @FechaHoy
 
-			UNION ALL
-			SELECT 'ROSEDAL' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_ROSEDAL_EntradasSinCalificar t0
-			WHERE t0.Fecha = @FechaHoy
+			BEGIN TRY
+				INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]
+					([Restaurante],[Fecha],[Origen],[Destino],[CodigoArtculoFR],[ArticuloFR],[Unidades]
+						,[Cantidad],[CostoProm],[Total],[Precio])
+				SELECT 'PARDO' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_PARDO_EntradasSinCalificar t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				RAISERROR('           * PARDO NO DISPONIBLE     SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
+			END CATCH
 
-			UNION ALL
-			SELECT 'PURUCHUCO' AS Restaurante, *
-			FROM [172.16.17.250].PERU_Frontrest.dbo.vw_PURUCHUCO_EntradasSinCalificar t0
-			WHERE t0.Fecha = @FechaHoy;
+			BEGIN TRY
+				INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]
+					([Restaurante],[Fecha],[Origen],[Destino],[CodigoArtculoFR],[ArticuloFR],[Unidades]
+						,[Cantidad],[CostoProm],[Total],[Precio])
+				SELECT 'ROSEDAL' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_ROSEDAL_EntradasSinCalificar t0
+				WHERE t0.Fecha = @FechaHoy
+			END TRY
+			BEGIN CATCH
+				RAISERROR('           * ROSEDAL NO DISPONIBLE     SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
+			END CATCH
 
-			SET @FilasInsertadas = @@ROWCOUNT;
-			PRINT ' ------> Filas Insertadas: ' + CAST(@FilasInsertadas - @FilasEliminadas AS VARCHAR(20));
+			BEGIN TRY
+				INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]
+					([Restaurante],[Fecha],[Origen],[Destino],[CodigoArtculoFR],[ArticuloFR],[Unidades]
+						,[Cantidad],[CostoProm],[Total],[Precio])
+				SELECT 'PURUCHUCO' AS Restaurante, *
+				FROM PERU_Frontrest.dbo.vw_PURUCHUCO_EntradasSinCalificar t0
+				WHERE t0.Fecha = @FechaHoy;
+			END TRY
+			BEGIN CATCH
+				RAISERROR('           * PURUCHUCO NO DISPONIBLE     SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
+			END CATCH
+
 		COMMIT TRANSACTION
+		PRINT '';
+        PRINT '============================================';
+        PRINT 'PROCESO COMPLETADO EXITOSAMENTE SIN ERRORES';
+        PRINT '============================================';
 	END TRY
 
 	BEGIN CATCH
-	    ROLLBACK TRANSACTION
-        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
-        RAISERROR(@ErrorMessage, 16, 1);
+        IF @@TRANCOUNT > 0 ROLLBACK;
+        THROW;
     END CATCH
 END
 GO

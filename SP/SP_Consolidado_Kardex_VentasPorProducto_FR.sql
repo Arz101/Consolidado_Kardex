@@ -23,101 +23,316 @@ BEGIN
         FROM CONSOLIDADO_KARDEX.dbo.VentasPorProducto
         WHERE Fecha = @FechaHoy;
 
-		SELECT @FilasEliminadas = @@ROWCOUNT;
+        -- CANADA
+        BEGIN TRY
+            INSERT INTO CONSOLIDADO_KARDEX.dbo.VentasPorProducto
+                (Restaurante,
+                    GrupoProductoFR,
+                    CodigoProductoFR,
+                    ProductoFR,
+                    Cantidad,
+                    Total,
+                    Fecha,
+                    FechaAnulacion)
+            SELECT 'CANADA', *
+            FROM PERU_Frontrest.dbo.vw_CANADA_VentaPorProducto
+            WHERE Fecha = @FechaHoy
+        END TRY
+        BEGIN CATCH
+            PRINT 'Error en CANADA: ' + ERROR_MESSAGE()
+        END CATCH
 
-        INSERT INTO CONSOLIDADO_KARDEX.dbo.VentasPorProducto
-               (Restaurante,
-                GrupoProductoFR,
-                CodigoProductoFR,
-                ProductoFR,
-                Cantidad,
-                Total,
-                Fecha,
-                FechaAnulacion)
+        -- P&A
+        BEGIN TRY
+            INSERT INTO CONSOLIDADO_KARDEX.dbo.VentasPorProducto
+                (Restaurante,
+                    GrupoProductoFR,
+                    CodigoProductoFR,
+                    ProductoFR,
+                    Cantidad,
+                    Total,
+                    Fecha,
+                    FechaAnulacion)
+            SELECT 'P&A', *
+            FROM PERU_Frontrest.dbo.sw_PARDOYALIAGA_VentaPorProducto
+            WHERE Fecha = @FechaHoy
+        END TRY
+        BEGIN CATCH
+            PRINT 'Error en P&A: ' + ERROR_MESSAGE()
+        END CATCH
 
-        SELECT 'CANADA', *
-        FROM [172.16.17.250].PERU_Frontrest.dbo.vw_CANADA_VentaPorProducto
-        WHERE Fecha = @FechaHoy
+        -- PLAZA NORTE
+        BEGIN TRY
+            INSERT INTO CONSOLIDADO_KARDEX.dbo.VentasPorProducto
+                (Restaurante,
+                    GrupoProductoFR,
+                    CodigoProductoFR,
+                    ProductoFR,
+                    Cantidad,
+                    Total,
+                    Fecha,
+                    FechaAnulacion)
+            SELECT 'PLAZA NORTE', *
+            FROM PERU_Frontrest.dbo.vw_PLAZA_NORTE_VentaPorProducto
+            WHERE Fecha = @FechaHoy
+        END TRY
+        BEGIN CATCH
+            PRINT 'Error en PLAZA NORTE: ' + ERROR_MESSAGE()
+        END CATCH
 
-        UNION ALL
-        SELECT 'P&A', *
-        FROM [172.16.17.250].PERU_Frontrest.dbo.sw_PARDOYALIAGA_VentaPorProducto
-        WHERE Fecha = @FechaHoy
+        -- MDS
+        BEGIN TRY
+            INSERT INTO CONSOLIDADO_KARDEX.dbo.VentasPorProducto
+                (Restaurante,
+                    GrupoProductoFR,
+                    CodigoProductoFR,
+                    ProductoFR,
+                    Cantidad,
+                    Total,
+                    Fecha,
+                    FechaAnulacion)
+            SELECT 'MDS', *
+            FROM PERU_Frontrest.dbo.sw_MALLSUR_VentaPorProducto
+            WHERE Fecha = @FechaHoy
+        END TRY
+        BEGIN CATCH
+            PRINT 'Error en MDS: ' + ERROR_MESSAGE()
+        END CATCH
 
-        UNION ALL
-        SELECT 'PLAZA NORTE', *
-        FROM [172.16.17.250].PERU_Frontrest.dbo.vw_PLAZA_NORTE_VentaPorProducto
-        WHERE Fecha = @FechaHoy
+        -- C. CIVICO
+        BEGIN TRY
+            INSERT INTO CONSOLIDADO_KARDEX.dbo.VentasPorProducto
+                (Restaurante,
+                    GrupoProductoFR,
+                    CodigoProductoFR,
+                    ProductoFR,
+                    Cantidad,
+                    Total,
+                    Fecha,
+                    FechaAnulacion)
+            SELECT 'C. CIVICO', *
+            FROM PERU_Frontrest.dbo.vw_CENTROCIVICO_VentaPorProducto
+            WHERE Fecha = @FechaHoy
+        END TRY
+        BEGIN CATCH
+            PRINT 'Error en C. CIVICO: ' + ERROR_MESSAGE()
+        END CATCH
 
-        UNION ALL
-        SELECT 'MDS', *
-        FROM [172.16.17.250].PERU_Frontrest.dbo.sw_MALLSUR_VentaPorProducto
-        WHERE Fecha = @FechaHoy
+        -- SALAVERRY
+        BEGIN TRY
+            INSERT INTO CONSOLIDADO_KARDEX.dbo.VentasPorProducto
+                (Restaurante,
+                    GrupoProductoFR,
+                    CodigoProductoFR,
+                    ProductoFR,
+                    Cantidad,
+                    Total,
+                    Fecha,
+                    FechaAnulacion)
+            SELECT 'SALAVERRY', *
+            FROM PERU_Frontrest.dbo.vw_SALAVERRY_VentaPorProducto
+            WHERE Fecha = @FechaHoy
+        END TRY
+        BEGIN CATCH
+            PRINT 'Error en SALAVERRY: ' + ERROR_MESSAGE()
+        END CATCH
 
-        UNION ALL
-        SELECT 'C. CIVICO', *
-        FROM [172.16.17.250].PERU_Frontrest.dbo.vw_CENTROCIVICO_VentaPorProducto
-        WHERE Fecha = @FechaHoy
+        -- FONTANA
+        BEGIN TRY
+            INSERT INTO CONSOLIDADO_KARDEX.dbo.VentasPorProducto
+                (Restaurante,
+                    GrupoProductoFR,
+                    CodigoProductoFR,
+                    ProductoFR,
+                    Cantidad,
+                    Total,
+                    Fecha,
+                    FechaAnulacion)
+            SELECT 'FONTANA', *
+            FROM PERU_Frontrest.dbo.vw_FONTANA_VentaPorProducto
+            WHERE Fecha = @FechaHoy
+        END TRY
+        BEGIN CATCH
+            PRINT 'Error en FONTANA: ' + ERROR_MESSAGE()
+        END CATCH
 
-        UNION ALL
-        SELECT 'SALAVERRY', *
-        FROM [172.16.17.250].PERU_Frontrest.dbo.vw_SALAVERRY_VentaPorProducto
-        WHERE Fecha = @FechaHoy
+        -- AREQUIPA
+        BEGIN TRY
+            INSERT INTO CONSOLIDADO_KARDEX.dbo.VentasPorProducto
+                (Restaurante,
+                    GrupoProductoFR,
+                    CodigoProductoFR,
+                    ProductoFR,
+                    Cantidad,
+                    Total,
+                    Fecha,
+                    FechaAnulacion)
+            SELECT 'AREQUIPA', *
+            FROM PERU_Frontrest.dbo.vw_AREQUIPA_VentaPorProducto
+            WHERE Fecha = @FechaHoy
+        END TRY
+        BEGIN CATCH
+            PRINT 'Error en AREQUIPA: ' + ERROR_MESSAGE()
+        END CATCH
 
-        UNION ALL
-        SELECT 'FONTANA', *
-        FROM [172.16.17.250].PERU_Frontrest.dbo.vw_FONTANA_VentaPorProducto
-        WHERE Fecha = @FechaHoy
+        -- MINKA
+        BEGIN TRY
+            INSERT INTO CONSOLIDADO_KARDEX.dbo.VentasPorProducto
+                (Restaurante,
+                    GrupoProductoFR,
+                    CodigoProductoFR,
+                    ProductoFR,
+                    Cantidad,
+                    Total,
+                    Fecha,
+                    FechaAnulacion)
+            SELECT 'MINKA', *
+            FROM PERU_Frontrest.dbo.vw_MINKA_VentaPorProducto
+            WHERE Fecha = @FechaHoy
+        END TRY
+        BEGIN CATCH
+            PRINT 'Error en MINKA: ' + ERROR_MESSAGE()
+        END CATCH
 
-        UNION ALL
-        SELECT 'AREQUIPA', *
-        FROM [172.16.17.250].PERU_Frontrest.dbo.vw_AREQUIPA_VentaPorProducto
-        WHERE Fecha = @FechaHoy
+        -- BENAVIDES
+        BEGIN TRY
+            INSERT INTO CONSOLIDADO_KARDEX.dbo.VentasPorProducto
+                (Restaurante,
+                    GrupoProductoFR,
+                    CodigoProductoFR,
+                    ProductoFR,
+                    Cantidad,
+                    Total,
+                    Fecha,
+                    FechaAnulacion)
+            SELECT 'BENAVIDES', *
+            FROM PERU_Frontrest.dbo.vw_BENAVIDES_VentaPorProducto
+            WHERE Fecha = @FechaHoy
+        END TRY
+        BEGIN CATCH
+            PRINT 'Error en BENAVIDES: ' + ERROR_MESSAGE()
+        END CATCH
 
-        UNION ALL
-        SELECT 'MINKA', *
-        FROM [172.16.17.250].PERU_Frontrest.dbo.vw_MINKA_VentaPorProducto
-        WHERE Fecha = @FechaHoy
+        -- CHILCLAYO
+        BEGIN TRY
+            INSERT INTO CONSOLIDADO_KARDEX.dbo.VentasPorProducto
+                (Restaurante,
+                    GrupoProductoFR,
+                    CodigoProductoFR,
+                    ProductoFR,
+                    Cantidad,
+                    Total,
+                    Fecha,
+                    FechaAnulacion)
+            SELECT 'CHILCLAYO', *
+            FROM PERU_Frontrest.dbo.vw_CHILCLAYO_VentaPorProducto
+            WHERE Fecha = @FechaHoy
+        END TRY
+        BEGIN CATCH
+            PRINT 'Error en CHILCLAYO: ' + ERROR_MESSAGE()
+        END CATCH
 
-        UNION ALL
-        SELECT 'BENAVIDES', *
-        FROM [172.16.17.250].PERU_Frontrest.dbo.vw_BENAVIDES_VentaPorProducto
-        WHERE Fecha = @FechaHoy
+        -- JOCKEY
+        BEGIN TRY
+            INSERT INTO CONSOLIDADO_KARDEX.dbo.VentasPorProducto
+                (Restaurante,
+                    GrupoProductoFR,
+                    CodigoProductoFR,
+                    ProductoFR,
+                    Cantidad,
+                    Total,
+                    Fecha,
+                    FechaAnulacion)
+            SELECT 'JOCKEY', *
+            FROM PERU_Frontrest.dbo.vw_JOCKEY_VentaPorProducto
+            WHERE Fecha = @FechaHoy
+        END TRY
+        BEGIN CATCH
+            PRINT 'Error en JOCKEY: ' + ERROR_MESSAGE()
+        END CATCH
 
-        UNION ALL
-        SELECT 'CHILCLAYO', *
-        FROM [172.16.17.250].PERU_Frontrest.dbo.vw_CHILCLAYO_VentaPorProducto
-        WHERE Fecha = @FechaHoy
+        -- SJL
+        BEGIN TRY
+            INSERT INTO CONSOLIDADO_KARDEX.dbo.VentasPorProducto
+                (Restaurante,
+                    GrupoProductoFR,
+                    CodigoProductoFR,
+                    ProductoFR,
+                    Cantidad,
+                    Total,
+                    Fecha,
+                    FechaAnulacion)
+            SELECT 'SJL', *
+            FROM PERU_Frontrest.dbo.vw_SJL_VentaPorProducto
+            WHERE Fecha = @FechaHoy
+        END TRY
+        BEGIN CATCH
+            PRINT 'Error en SJL: ' + ERROR_MESSAGE()
+        END CATCH
 
-        UNION ALL
-        SELECT 'JOCKEY', *
-        FROM [172.16.17.250].PERU_Frontrest.dbo.vw_JOCKEY_VentaPorProducto
-        WHERE Fecha = @FechaHoy
+        -- PARDO
+        BEGIN TRY
+            INSERT INTO CONSOLIDADO_KARDEX.dbo.VentasPorProducto
+                (Restaurante,
+                    GrupoProductoFR,
+                    CodigoProductoFR,
+                    ProductoFR,
+                    Cantidad,
+                    Total,
+                    Fecha,
+                    FechaAnulacion)
+            SELECT 'PARDO', *
+            FROM PERU_Frontrest.dbo.vw_PARDO_VentaPorProducto
+            WHERE Fecha = @FechaHoy
+        END TRY
+        BEGIN CATCH
+            PRINT 'Error en PARDO: ' + ERROR_MESSAGE()
+        END CATCH
 
-        UNION ALL
-        SELECT 'SJL', *
-        FROM [172.16.17.250].PERU_Frontrest.dbo.vw_SJL_VentaPorProducto
-        WHERE Fecha = @FechaHoy
+        -- ROSEDAL
+        BEGIN TRY
+            INSERT INTO CONSOLIDADO_KARDEX.dbo.VentasPorProducto
+                (Restaurante,
+                    GrupoProductoFR,
+                    CodigoProductoFR,
+                    ProductoFR,
+                    Cantidad,
+                    Total,
+                    Fecha,
+                    FechaAnulacion)
+            SELECT 'ROSEDAL', *
+            FROM PERU_Frontrest.dbo.vw_ROSEDAL_VentaPorProducto
+            WHERE Fecha = @FechaHoy
+        END TRY
+        BEGIN CATCH
+            PRINT 'Error en ROSEDAL: ' + ERROR_MESSAGE()
+        END CATCH
 
-        UNION ALL
-        SELECT 'PARDO', *
-        FROM [172.16.17.250].PERU_Frontrest.dbo.vw_PARDO_VentaPorProducto
-        WHERE Fecha = @FechaHoy
+        -- PURUCHUCO
+        BEGIN TRY
+            INSERT INTO CONSOLIDADO_KARDEX.dbo.VentasPorProducto
+                (Restaurante,
+                    GrupoProductoFR,
+                    CodigoProductoFR,
+                    ProductoFR,
+                    Cantidad,
+                    Total,
+                    Fecha,
+                    FechaAnulacion)
+            SELECT 'PURUCHUCO', *
+            FROM PERU_Frontrest.dbo.vw_PURUCHUCO_VentaPorProducto
+            WHERE Fecha = @FechaHoy
+        END TRY
+        BEGIN CATCH
+            PRINT 'Error en PURUCHUCO: ' + ERROR_MESSAGE()
+        END CATCH
 
-        UNION ALL
-        SELECT 'ROSEDAL', *
-        FROM [172.16.17.250].PERU_Frontrest.dbo.vw_ROSEDAL_VentaPorProducto
-        WHERE Fecha = @FechaHoy
+        COMMIT TRANSACTION;
 
-        UNION ALL
-        SELECT 'PURUCHUCO', *
-        FROM [172.16.17.250].PERU_Frontrest.dbo.vw_PURUCHUCO_VentaPorProducto
-        WHERE Fecha = @FechaHoy;
-
-		SET @FilasInsertadas = @@ROWCOUNT;
-		PRINT ' ------> Filas Insertadas: ' + CAST(@FilasInsertadas - @FilasEliminadas AS VARCHAR(20));
-
-        COMMIT;
+        PRINT '';
+        PRINT '============================================';
+        PRINT 'PROCESO COMPLETADO EXITOSAMENTE SIN ERRORES';
+        PRINT '============================================';
     END TRY
     BEGIN CATCH
         IF @@TRANCOUNT > 0 ROLLBACK;
