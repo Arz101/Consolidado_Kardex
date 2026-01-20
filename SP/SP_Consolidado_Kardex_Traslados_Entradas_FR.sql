@@ -84,17 +84,17 @@ BEGIN
 			END CATCH
 
 			-- C. CIVICO
-			BEGIN TRY
-				INSERT INTO [dbo].[TrasladoEntrantes]
-					([Restaurante],[Fecha],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR]
-					,[Unidades],[Cantidad],[Precio],[SubTotal],[IV],[Neto])
-				SELECT 'C. CIVICO' AS Restaurante, *
-				FROM PERU_Frontrest.dbo.vw_CENTROCIVICO_TrasladosEntradas t0
-				WHERE t0.Fecha = @FechaHoy
-			END TRY
-			BEGIN CATCH
-				PRINT 'Error en C. CIVICO: ' + ERROR_MESSAGE()
-			END CATCH
+			--BEGIN TRY
+			--	INSERT INTO [dbo].[TrasladoEntrantes]
+			--		([Restaurante],[Fecha],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR]
+			--		,[Unidades],[Cantidad],[Precio],[SubTotal],[IV],[Neto])
+			--	SELECT 'C. CIVICO' AS Restaurante, *
+			--	FROM PERU_Frontrest.dbo.vw_CENTROCIVICO_TrasladosEntradas t0
+			--	WHERE t0.Fecha = @FechaHoy
+			--END TRY
+			--BEGIN CATCH
+				--PRINT 'Error en C. CIVICO: ' + ERROR_MESSAGE()
+			--END CATCH
 
 			-- SALAVERRY
 			BEGIN TRY

@@ -139,20 +139,20 @@ BEGIN
 				PRINT '           * MDS NO DISPONIBLE     SP_PrecioTiendas'
 			END CATCH	
 
-			BEGIN TRY
-				WITH Datos AS (
-					SELECT 'CC' AS Sucursal, Referencia, AVG(CostProm) AS CostProm, FechaUltCompra  
-					FROM PERU_Frontrest.dbo.vw_CENTROCIVICO_Costo
-					GROUP BY Referencia, FechaUltCompra
-				)
-				INSERT INTO [CONSOLIDADO_KARDEX].[dbo].PrecioTiendas (Sucursal, Referencia, CostProm, Fecha) 
-				SELECT *
-				FROM Datos
-				WHERE FechaUltCompra = @FechaHoy;
-			END TRY
-			BEGIN CATCH
-				PRINT '           * CC NO DISPONIBLE     SP_PrecioTiendas'
-			END CATCH	
+			--BEGIN TRY
+			--	WITH Datos AS (
+			--		SELECT 'CC' AS Sucursal, Referencia, AVG(CostProm) AS CostProm, FechaUltCompra  
+			--		FROM PERU_Frontrest.dbo.vw_CENTROCIVICO_Costo
+			--		GROUP BY Referencia, FechaUltCompra
+			--	)
+			--	INSERT INTO [CONSOLIDADO_KARDEX].[dbo].PrecioTiendas (Sucursal, Referencia, CostProm, Fecha) 
+			--	SELECT *
+			--	FROM Datos
+			--	WHERE FechaUltCompra = @FechaHoy;
+			--END TRY
+			--BEGIN CATCH
+				--PRINT '           * CC NO DISPONIBLE     SP_PrecioTiendas'
+			--END CATCH	
 
 			BEGIN TRY
 				WITH Datos AS (

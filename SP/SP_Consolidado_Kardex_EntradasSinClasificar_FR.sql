@@ -78,17 +78,17 @@ BEGIN
 				RAISERROR('           * MDS NO DISPONIBLE     SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
 			END CATCH
 
-			BEGIN TRY
-				INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]
-					([Restaurante],[Fecha],[Origen],[Destino],[CodigoArtculoFR],[ArticuloFR],[Unidades]
-						,[Cantidad],[CostoProm],[Total],[Precio])
-				SELECT 'C. CIVICO' AS Restaurante, *
-				FROM PERU_Frontrest.dbo.vw_CENTROCIVICO_EntradasSinCalificar t0
-				WHERE t0.Fecha = @FechaHoy
-			END TRY
-			BEGIN CATCH
-				RAISERROR('           * C.CIVICO NO DISPONIBLE     SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
-			END CATCH				
+			--BEGIN TRY
+			--	INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]
+			--		([Restaurante],[Fecha],[Origen],[Destino],[CodigoArtculoFR],[ArticuloFR],[Unidades]
+			--			,[Cantidad],[CostoProm],[Total],[Precio])
+			--	SELECT 'C. CIVICO' AS Restaurante, *
+			--	FROM PERU_Frontrest.dbo.vw_CENTROCIVICO_EntradasSinCalificar t0
+			--	WHERE t0.Fecha = @FechaHoy
+			--END TRY
+			--BEGIN CATCH
+				--RAISERROR('           * C.CIVICO NO DISPONIBLE     SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
+			--END CATCH				
 
 			BEGIN TRY
 				INSERT INTO [CONSOLIDADO_KARDEX].[dbo].[EntradaSinClasificar]

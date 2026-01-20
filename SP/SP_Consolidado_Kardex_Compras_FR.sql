@@ -82,18 +82,18 @@ BEGIN
         		RAISERROR('           * MDS NO DISPONIBLE     SP_Compras', 0, 1) WITH NOWAIT;
 			END CATCH
 			
-			BEGIN TRY
-				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras(Restaurante,Fecha,Factura,[No.Entrada],Proveedor,SubTotal,IV,Neto)
+			--BEGIN TRY
+			--	INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras(Restaurante,Fecha,Factura,[No.Entrada],Proveedor,SubTotal,IV,Neto)
 
-				SELECT 'C. CIVICO', t0.Fecha, t0.Factura, t0.[No.Entrada], t0.Proveedor,
-				   SUM(t0.SubTotal), SUM(t0.IV), SUM(t0.Neto)
-				FROM PERU_Frontrest.dbo.vw_CENTROCIVICO_Compras t0
-				WHERE t0.Fecha = @FechaHoy
-				GROUP BY t0.Fecha, t0.Factura, t0.[No.Entrada], t0.Proveedor
-			END TRY
-			BEGIN CATCH
-        		RAISERROR('           * C.CIVICO NO DISPONIBLE     SP_Compras', 0, 1) WITH NOWAIT;
-			END CATCH
+			--	SELECT 'C. CIVICO', t0.Fecha, t0.Factura, t0.[No.Entrada], t0.Proveedor,
+			--	   SUM(t0.SubTotal), SUM(t0.IV), SUM(t0.Neto)
+			--	FROM PERU_Frontrest.dbo.vw_CENTROCIVICO_Compras t0
+			--	WHERE t0.Fecha = @FechaHoy
+			--	GROUP BY t0.Fecha, t0.Factura, t0.[No.Entrada], t0.Proveedor
+			--END TRY
+			--BEGIN CATCH
+        		---RAISERROR('           * C.CIVICO NO DISPONIBLE     SP_Compras', 0, 1) WITH NOWAIT;
+			--END CATCH
 
 			BEGIN TRY
 				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras(Restaurante,Fecha,Factura,[No.Entrada],Proveedor,SubTotal,IV,Neto)

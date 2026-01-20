@@ -79,17 +79,17 @@ BEGIN
         		RAISERROR('           * MDS NO DISPONIBLE     SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
 			END CATCH 
 
-			BEGIN TRY
-				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle
-					([Restaurante],[Fecha],[Factura],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR],[Unidades]
-					,[Cantidad],[PrecioCompras],[SubTotal],[IV],[Neto],[CODPROVEEDOR])
-				SELECT 'C. CIVICO' AS Restaurante, *
-				FROM PERU_Frontrest.dbo.vw_CENTROCIVICO_Compras t0
-				WHERE t0.Fecha = @FechaHoy
-			END TRY
-			BEGIN CATCH
-        		RAISERROR('           * C.CIVICO NO DISPONIBLE     SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
-			END CATCH 
+			--BEGIN TRY
+			--	INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle
+			--		([Restaurante],[Fecha],[Factura],[No.Entrada],[Proveedor],[CodigoArticuloFR],[ArticuloFR],[Unidades]
+			--		,[Cantidad],[PrecioCompras],[SubTotal],[IV],[Neto],[CODPROVEEDOR])
+			--	SELECT 'C. CIVICO' AS Restaurante, *
+			--	FROM PERU_Frontrest.dbo.vw_CENTROCIVICO_Compras t0
+			--	WHERE t0.Fecha = @FechaHoy
+			--END TRY
+			--BEGIN CATCH
+        	--	RAISERROR('           * C.CIVICO NO DISPONIBLE     SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
+			--END CATCH 
 
 			BEGIN TRY
 				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras_Detalle

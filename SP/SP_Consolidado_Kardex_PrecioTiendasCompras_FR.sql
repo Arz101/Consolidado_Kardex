@@ -137,16 +137,16 @@ BEGIN
 			END CATCH
 
 			-- CC
-			BEGIN TRY
-				INSERT INTO CONSOLIDADO_KARDEX.dbo.PreciosTiendasCompras (Sucursal, Referencia, CostProm, Fecha)
-				SELECT 'CC' AS Sucursal, REFERENCIA, AVG(CostProm), CAST(FECHAALBARAN AS DATE)
-				FROM [PERU_Frontrest].dbo.vw_CCIVICO_PrecioCompras
-				WHERE CAST(FECHAALBARAN AS DATE) = @FechaHoy
-				GROUP BY REFERENCIA, FECHAALBARAN
-			END TRY
-			BEGIN CATCH
-				PRINT 'Error en CC: ' + ERROR_MESSAGE()
-			END CATCH
+			--BEGIN TRY
+			--	INSERT INTO CONSOLIDADO_KARDEX.dbo.PreciosTiendasCompras (Sucursal, Referencia, CostProm, Fecha)
+			--	SELECT 'CC' AS Sucursal, REFERENCIA, AVG(CostProm), CAST(FECHAALBARAN AS DATE)
+			--	FROM [PERU_Frontrest].dbo.vw_CCIVICO_PrecioCompras
+			--	WHERE CAST(FECHAALBARAN AS DATE) = @FechaHoy
+			--	GROUP BY REFERENCIA, FECHAALBARAN
+			--END TRY
+			--BEGIN CATCH
+				--PRINT 'Error en CC: ' + ERROR_MESSAGE()
+			--END CATCH
 
 			-- SALAVERRY
 			BEGIN TRY
@@ -210,5 +210,3 @@ BEGIN
     END CATCH
 END
 GO
-
-

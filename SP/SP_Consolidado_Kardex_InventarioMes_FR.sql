@@ -116,19 +116,19 @@ BEGIN
 				RAISERROR('           * MDS NO DISPONIBLE     SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
 			END CATCH
 
-			BEGIN TRY
-				WITH Datos AS (
-					SELECT 'C. CIVICO' AS Restaurante, Referencia, Cantidad, Fecha
-					FROM PERU_Frontrest.dbo.vw_CCIVICO_Cantidad
-				)
-				INSERT INTO [dbo].[InventarioMes] ([Restaurante],[Referencia],[Cantidad],[Fecha])
-				SELECT *
-				FROM Datos
-				WHERE Fecha = CAST(GETDATE() AS DATE)
-			END TRY
-			BEGIN CATCH
-				RAISERROR('           * C. CIVICO NO DISPONIBLE     SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
-			END CATCH
+			--BEGIN TRY
+			--	WITH Datos AS (
+			--		SELECT 'C. CIVICO' AS Restaurante, Referencia, Cantidad, Fecha
+			--		FROM PERU_Frontrest.dbo.vw_CCIVICO_Cantidad
+			--	)
+			--	INSERT INTO [dbo].[InventarioMes] ([Restaurante],[Referencia],[Cantidad],[Fecha])
+			--	SELECT *
+			--	FROM Datos
+			--	WHERE Fecha = CAST(GETDATE() AS DATE)
+			--END TRY
+			--BEGIN CATCH
+				--RAISERROR('           * C. CIVICO NO DISPONIBLE     SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
+			--END CATCH
 
 			BEGIN TRY
 				WITH Datos AS (

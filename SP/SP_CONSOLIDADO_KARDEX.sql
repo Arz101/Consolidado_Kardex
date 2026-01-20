@@ -1,4 +1,5 @@
-
+USE CONSOLIDADO_KARDEX
+GO
 CREATE OR ALTER  PROCEDURE [dbo].[SP_CONSOLIDADO_KARDEX]
 -- =============================================
 -- Author:		Adrian Rodriguez
@@ -25,45 +26,66 @@ BEGIN
     BEGIN TRY
 
         RAISERROR('Iniciando SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
+        RAISERROR(' ',0, 1) WITH NOWAIT;
         EXEC dbo.SP_Compras_Detalles_FR;
+        RAISERROR(' ',0, 1) WITH NOWAIT;
         RAISERROR('***** Finalizó SP_Compras_Detalles_FR (1/10)*****', 0, 1) WITH NOWAIT;
 
         RAISERROR('Iniciando SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
+        RAISERROR(' ',0, 1) WITH NOWAIT;
         EXEC dbo.SP_EntradasSinClasificar_FR;
+        RAISERROR(' ',0, 1) WITH NOWAIT;
         RAISERROR('***** Finalizó SP_EntradasSinClasificar_FR (2/10) *****', 0, 1) WITH NOWAIT;
 
         RAISERROR('Iniciando SP_FR_Compras', 0, 1) WITH NOWAIT;
+        RAISERROR(' ',0, 1) WITH NOWAIT;
         EXEC dbo.SP_FR_Compras;
+        RAISERROR(' ',0, 1) WITH NOWAIT;
         RAISERROR('***** Finalizó SP_FR_Compras (3/10) *****', 0, 1) WITH NOWAIT;
 
         RAISERROR('Iniciando SP_FR_VentasPorProducto', 0, 1) WITH NOWAIT;
+        RAISERROR(' ',0, 1) WITH NOWAIT;
         EXEC dbo.SP_FR_VentasPorProducto;
+        RAISERROR(' ',0, 1) WITH NOWAIT;
         RAISERROR('***** Finalizó SP_FR_VentasPorProducto (4/10) *****', 0, 1) WITH NOWAIT;
 
         RAISERROR('Iniciando SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
+                RAISERROR(' ',0, 1) WITH NOWAIT;
         EXEC dbo.SP_InventarioMes_FR;
+                RAISERROR(' ',0, 1) WITH NOWAIT;
         RAISERROR('***** Finalizó SP_InventarioMes_FR (5/10) *****', 0, 1) WITH NOWAIT;
 
         RAISERROR('Iniciando SP_PrecioTiendasCompras_FR', 0, 1) WITH NOWAIT;
+                RAISERROR(' ',0, 1) WITH NOWAIT;
         EXEC dbo.SP_PrecioTiendasCompras_FR;
+                RAISERROR(' ',0, 1) WITH NOWAIT;
         RAISERROR('***** Finalizó SP_PrecioTiendasCompras_FR (6/10) *****', 0, 1) WITH NOWAIT;
 
         RAISERROR('Iniciando SP_SalidasSinClasificar_FR', 0, 1) WITH NOWAIT;
+                RAISERROR(' ',0, 1) WITH NOWAIT;
         EXEC dbo.SP_SalidasSinClasificar_FR;
+                RAISERROR(' ',0, 1) WITH NOWAIT;
         RAISERROR('***** Finalizó SP_SalidasSinClasificar_FR (7/10) *****', 0, 1) WITH NOWAIT;
 
         RAISERROR('Iniciando SP_Traslados_Salidas_FR', 0, 1) WITH NOWAIT;
+                RAISERROR(' ',0, 1) WITH NOWAIT;
         EXEC dbo.SP_Traslados_Salidas_FR;
+                RAISERROR(' ',0, 1) WITH NOWAIT;
         RAISERROR('***** Finalizó SP_Traslados_Salidas_FR (8/10) *****', 0, 1) WITH NOWAIT;
 
         RAISERROR('Iniciando SP_TrasladosEntrastes_FR', 0, 1) WITH NOWAIT;
+                RAISERROR(' ',0, 1) WITH NOWAIT;
         EXEC dbo.SP_TrasladosEntrastes_FR;
+                RAISERROR(' ',0, 1) WITH NOWAIT;
         RAISERROR('***** Finalizó SP_TrasladosEntrastes_FR (9/10) *****', 0, 1) WITH NOWAIT;
 
         RAISERROR('Iniciando SP_PrecioTiendas_FR', 0, 1) WITH NOWAIT;
+                RAISERROR(' ',0, 1) WITH NOWAIT;
         EXEC dbo.SP_PrecioTiendas;
+                RAISERROR(' ',0, 1) WITH NOWAIT;
         RAISERROR('***** Finalizó SP_TrasladosEntrastes_FR (10/10) *****', 0, 1) WITH NOWAIT;
 
+        RAISERROR(' ',0, 1) WITH NOWAIT;
         RAISERROR('Proceso completo', 0, 1) WITH NOWAIT;
 
     END TRY
@@ -75,3 +97,4 @@ BEGIN
 END
 
 GO
+

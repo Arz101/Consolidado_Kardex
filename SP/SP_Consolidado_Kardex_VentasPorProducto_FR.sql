@@ -1,4 +1,5 @@
-
+USE CONSOLIDADO_KARDEX
+GO
 
 CREATE OR ALTER PROCEDURE dbo.SP_FR_VentasPorProducto 
 -- =============================================
@@ -100,7 +101,7 @@ BEGIN
         END CATCH
 
         -- C. CIVICO
-        BEGIN TRY
+        /*BEGIN TRY
             INSERT INTO CONSOLIDADO_KARDEX.dbo.VentasPorProducto
                 (Restaurante,
                     GrupoProductoFR,
@@ -114,9 +115,9 @@ BEGIN
             FROM PERU_Frontrest.dbo.vw_CENTROCIVICO_VentaPorProducto
             WHERE Fecha = @FechaHoy
         END TRY
-        BEGIN CATCH
-            PRINT 'Error en C. CIVICO: ' + ERROR_MESSAGE()
-        END CATCH
+        BEGIN CATCH*/
+        --    PRINT 'Error en C. CIVICO: ' + ERROR_MESSAGE()
+        --END CATCH
 
         -- SALAVERRY
         BEGIN TRY
