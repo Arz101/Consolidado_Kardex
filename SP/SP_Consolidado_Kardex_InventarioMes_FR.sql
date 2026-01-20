@@ -1,3 +1,12 @@
+USE CONSOLIDADO_KARDEX
+
+GO
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 
 CREATE OR ALTER PROCEDURE SP_InventarioMes_FR
 -- =============================================
@@ -8,15 +17,22 @@ CREATE OR ALTER PROCEDURE SP_InventarioMes_FR
 AS
 BEGIN
 	SET NOCOUNT ON;
+	SET XACT_ABORT ON;
+
+	DECLARE @IdLog INT;
+	DECLARE @Inicio DATETIME2 = SYSDATETIME()
+
 	BEGIN TRY
+		INSERT INTO CONSOLIDADO_KARDEX.dbo.Logs (NombreSP,  Estado, FechaInicio)
+		VALUES ('SP_InventarioMes_FR', 'EN PROCESO', @Inicio)
+		
+		SET @IdLog = SCOPE_IDENTITY();
+
 		BEGIN TRANSACTION
-			DECLARE @FilasInsertadas INT;
-			DECLARE @FilasEliminadas INT;
-
+			DECLARE @FechaHoy DATE = CAST(GETDATE() AS DATE)
+			
 			DELETE FROM CONSOLIDADO_KARDEX.dbo.InventarioMes
-			WHERE Fecha = CAST(GETDATE() AS DATE);
-
-			SELECT @FilasEliminadas = @@ROWCOUNT;
+			WHERE Fecha = @FechaHoy
 
 			BEGIN TRY
 				WITH Datos AS (
@@ -26,7 +42,7 @@ BEGIN
 				INSERT INTO [dbo].[InventarioMes] ([Restaurante],[Referencia],[Cantidad],[Fecha])
 				SELECT *
 				FROM Datos
-				WHERE Fecha = CAST(GETDATE() AS DATE)
+				WHERE Fecha = @FechaHoy
 			END TRY
 			BEGIN CATCH
 				RAISERROR('           * JOCKEY NO DISPONIBLE     SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
@@ -40,7 +56,7 @@ BEGIN
 				INSERT INTO [dbo].[InventarioMes] ([Restaurante],[Referencia],[Cantidad],[Fecha])
 				SELECT *
 				FROM Datos
-				WHERE Fecha = CAST(GETDATE() AS DATE)
+				WHERE Fecha = @FechaHoy
 			END TRY
 			BEGIN CATCH
 				RAISERROR('           * PARDO NO DISPONIBLE     SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
@@ -54,7 +70,7 @@ BEGIN
 				INSERT INTO [dbo].[InventarioMes] ([Restaurante],[Referencia],[Cantidad],[Fecha])
 				SELECT *
 				FROM Datos
-				WHERE Fecha = CAST(GETDATE() AS DATE)
+				WHERE Fecha = @FechaHoy
 			END TRY
 			BEGIN CATCH
 				RAISERROR('           * PURUCHUCO NO DISPONIBLE     SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
@@ -68,7 +84,7 @@ BEGIN
 				INSERT INTO [dbo].[InventarioMes] ([Restaurante],[Referencia],[Cantidad],[Fecha])
 				SELECT *
 				FROM Datos
-				WHERE Fecha = CAST(GETDATE() AS DATE)
+				WHERE Fecha = @FechaHoy
 			END TRY
 			BEGIN CATCH
 				RAISERROR('           * CANADA NO DISPONIBLE     SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
@@ -82,7 +98,7 @@ BEGIN
 				INSERT INTO [dbo].[InventarioMes] ([Restaurante],[Referencia],[Cantidad],[Fecha])
 				SELECT *
 				FROM Datos
-				WHERE Fecha = CAST(GETDATE() AS DATE)
+				WHERE Fecha = @FechaHoy
 			END TRY
 			BEGIN CATCH
 				RAISERROR('           * P&A NO DISPONIBLE     SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
@@ -96,7 +112,7 @@ BEGIN
 				INSERT INTO [dbo].[InventarioMes] ([Restaurante],[Referencia],[Cantidad],[Fecha])
 				SELECT *
 				FROM Datos
-				WHERE Fecha = CAST(GETDATE() AS DATE)
+				WHERE Fecha = @FechaHoy
 			END TRY
 			BEGIN CATCH
 				RAISERROR('           * PZ NO DISPONIBLE     SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
@@ -110,7 +126,7 @@ BEGIN
 				INSERT INTO [dbo].[InventarioMes] ([Restaurante],[Referencia],[Cantidad],[Fecha])
 				SELECT *
 				FROM Datos
-				WHERE Fecha = CAST(GETDATE() AS DATE)
+				WHERE Fecha = @FechaHoy
 			END TRY
 			BEGIN CATCH
 				RAISERROR('           * MDS NO DISPONIBLE     SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
@@ -124,7 +140,7 @@ BEGIN
 			--	INSERT INTO [dbo].[InventarioMes] ([Restaurante],[Referencia],[Cantidad],[Fecha])
 			--	SELECT *
 			--	FROM Datos
-			--	WHERE Fecha = CAST(GETDATE() AS DATE)
+			--	WHERE Fecha = @FechaHoy
 			--END TRY
 			--BEGIN CATCH
 				--RAISERROR('           * C. CIVICO NO DISPONIBLE     SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
@@ -138,7 +154,7 @@ BEGIN
 				INSERT INTO [dbo].[InventarioMes] ([Restaurante],[Referencia],[Cantidad],[Fecha])
 				SELECT *
 				FROM Datos
-				WHERE Fecha = CAST(GETDATE() AS DATE)
+				WHERE Fecha = @FechaHoy
 			END TRY
 			BEGIN CATCH
 				RAISERROR('           * SALAVERRY NO DISPONIBLE     SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
@@ -152,7 +168,7 @@ BEGIN
 				INSERT INTO [dbo].[InventarioMes] ([Restaurante],[Referencia],[Cantidad],[Fecha])
 				SELECT *
 				FROM Datos
-				WHERE Fecha = CAST(GETDATE() AS DATE)
+				WHERE Fecha = @FechaHoy
 			END TRY
 			BEGIN CATCH
 				RAISERROR('           * FONTANA NO DISPONIBLE     SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
@@ -166,7 +182,7 @@ BEGIN
 				INSERT INTO [dbo].[InventarioMes] ([Restaurante],[Referencia],[Cantidad],[Fecha])
 				SELECT *
 				FROM Datos
-				WHERE Fecha = CAST(GETDATE() AS DATE)
+				WHERE Fecha = @FechaHoy
 			END TRY
 			BEGIN CATCH
 				RAISERROR('           * AREQUIPA NO DISPONIBLE     SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
@@ -180,7 +196,7 @@ BEGIN
 				INSERT INTO [dbo].[InventarioMes] ([Restaurante],[Referencia],[Cantidad],[Fecha])
 				SELECT *
 				FROM Datos
-				WHERE Fecha = CAST(GETDATE() AS DATE)
+				WHERE Fecha = @FechaHoy
 			END TRY
 			BEGIN CATCH
 				RAISERROR('           * MINKA NO DISPONIBLE     SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
@@ -194,7 +210,7 @@ BEGIN
 				INSERT INTO [dbo].[InventarioMes] ([Restaurante],[Referencia],[Cantidad],[Fecha])
 				SELECT *
 				FROM Datos
-				WHERE Fecha = CAST(GETDATE() AS DATE)
+				WHERE Fecha = @FechaHoy
 			END TRY
 			BEGIN CATCH
 				RAISERROR('           * BENAVIDES NO DISPONIBLE     SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
@@ -208,7 +224,7 @@ BEGIN
 				INSERT INTO [dbo].[InventarioMes] ([Restaurante],[Referencia],[Cantidad],[Fecha])
 				SELECT *
 				FROM Datos
-				WHERE Fecha = CAST(GETDATE() AS DATE)
+				WHERE Fecha = @FechaHoy
 			END TRY
 			BEGIN CATCH
 				RAISERROR('           * CHICLAYO NO DISPONIBLE     SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
@@ -222,7 +238,7 @@ BEGIN
 				INSERT INTO [dbo].[InventarioMes] ([Restaurante],[Referencia],[Cantidad],[Fecha])
 				SELECT *
 				FROM Datos
-				WHERE Fecha = CAST(GETDATE() AS DATE)
+				WHERE Fecha = @FechaHoy
 			END TRY
 			BEGIN CATCH
 				RAISERROR('           * SJL NO DISPONIBLE     SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
@@ -234,10 +250,25 @@ BEGIN
         PRINT '============================================';
         PRINT 'PROCESO COMPLETADO EXITOSAMENTE SIN ERRORES';
         PRINT '============================================';
+
+		UPDATE CONSOLIDADO_KARDEX.dbo.Logs
+		SET
+			FechaFin = SYSDATETIME(),
+			Estado = 'OK'
+		WHERE id = @IdLog 
+
 	END TRY
 	BEGIN CATCH
-	    ROLLBACK TRANSACTION
-        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
-        RAISERROR(@ErrorMessage, 16, 1);
+		UPDATE CONSOLIDADO_KARDEX.dbo.Logs
+		SET
+			FechaFin = SYSDATETIME(),
+			Estado = 'Error',
+			MensajeError = ERROR_MESSAGE(),
+			NumeroError = ERROR_NUMBER(),
+			LineaError = ERROR_LINE()
+		WHERE id = @IdLog
+		
+        IF @@TRANCOUNT > 0 ROLLBACK;
+        THROW;
     END CATCH
 END

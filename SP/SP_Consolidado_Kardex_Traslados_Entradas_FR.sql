@@ -21,12 +21,16 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 	SET XACT_ABORT ON;
+	DECLARE @IdLog INT;
+	DECLARE @Inicio DATETIME2 = SYSDATETIME()
+
 	BEGIN TRY
+		INSERT INTO CONSOLIDADO_KARDEX.dbo.Logs (NombreSP,  Estado, FechaInicio)
+		VALUES ('SP_TrasladosEntrastes_FR', 'EN PROCESO', @Inicio)
+		
+		SET @IdLog = SCOPE_IDENTITY();		
 		BEGIN TRANSACTION
 			DECLARE @FechaHoy DATE = CAST(GETDATE() AS DATE)
-			DECLARE @FilasInsertadas INT;
-			DECLARE @FilasEliminadas INT;
-
 
 			DELETE FROM CONSOLIDADO_KARDEX.dbo.TrasladoEntrantes
 			WHERE Fecha = @FechaHoy
@@ -245,11 +249,26 @@ BEGIN
         PRINT '============================================';
         PRINT 'PROCESO COMPLETADO EXITOSAMENTE SIN ERRORES';
         PRINT '============================================';
+		UPDATE CONSOLIDADO_KARDEX.dbo.Logs
+		SET
+			FechaFin = SYSDATETIME(),
+			Estado = 'OK'
+		WHERE id = @IdLog 
+
 	END TRY
+
 	BEGIN CATCH
-		ROLLBACK TRANSACTION
-        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
-        RAISERROR(@ErrorMessage, 16, 1);
+		UPDATE CONSOLIDADO_KARDEX.dbo.Logs
+		SET
+			FechaFin = SYSDATETIME(),
+			Estado = 'Error',
+			MensajeError = ERROR_MESSAGE(),
+			NumeroError = ERROR_NUMBER(),
+			LineaError = ERROR_LINE()
+		WHERE id = @IdLog
+		
+        IF @@TRANCOUNT > 0 ROLLBACK;
+        THROW;
     END CATCH
 END
 GO

@@ -20,17 +20,20 @@ AS
 BEGIN 
 	SET NOCOUNT ON;
 	SET XACT_ABORT ON;
-	BEGIN TRY
-		BEGIN TRANSACTION
 
+	DECLARE @IdLog INT;
+	DECLARE @Inicio DATETIME2 = SYSDATETIME()
+
+	BEGIN TRY
+		INSERT INTO CONSOLIDADO_KARDEX.dbo.Logs (NombreSP,  Estado, FechaInicio)
+		VALUES ('SP_FR_Compras', 'EN PROCESO', @Inicio)	
+
+		BEGIN TRANSACTION
+			SET @IdLog = SCOPE_IDENTITY();
 			DECLARE @FechaHoy DATE = CAST(GETDATE() AS DATE)
-			DECLARE @FilasInsertadas INT;
-			DECLARE @FilasEliminadas INT;
 
 			DELETE FROM CONSOLIDADO_KARDEX.[dbo].[Compras]
 			WHERE Fecha = @FechaHoy
-
-			SELECT @FilasEliminadas = @@ROWCOUNT;
 			
 			BEGIN TRY 
 				INSERT INTO CONSOLIDADO_KARDEX.dbo.Compras(Restaurante,Fecha,Factura,[No.Entrada],Proveedor,SubTotal,IV,Neto)
@@ -244,8 +247,23 @@ BEGIN
         PRINT '============================================';
         PRINT 'PROCESO COMPLETADO EXITOSAMENTE SIN ERRORES';
         PRINT '============================================';
+
+		UPDATE CONSOLIDADO_KARDEX.dbo.Logs
+		SET
+			FechaFin = SYSDATETIME(),
+			Estado = 'OK'
+		WHERE id = @IdLog 
+
 	END TRY
 	BEGIN CATCH 
+		UPDATE CONSOLIDADO_KARDEX.dbo.Logs
+		SET
+			FechaFin = SYSDATETIME(),
+			Estado = 'Error',
+			MensajeError = ERROR_MESSAGE(),
+			NumeroError = ERROR_NUMBER(),
+			LineaError = ERROR_LINE()
+		WHERE id = @IdLog
         IF @@TRANCOUNT > 0 ROLLBACK;
         THROW;
     END CATCH

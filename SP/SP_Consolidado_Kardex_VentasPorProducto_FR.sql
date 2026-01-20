@@ -14,11 +14,16 @@ BEGIN
 
     DECLARE @FechaHoy DATE = CAST(GETDATE() AS DATE);
 
-    BEGIN TRY
-        BEGIN TRAN;
 
-		DECLARE @FilasInsertadas INT;
-		DECLARE @FilasEliminadas INT;
+	DECLARE @IdLog INT;
+	DECLARE @Inicio DATETIME2 = SYSDATETIME()
+
+	BEGIN TRY
+		INSERT INTO CONSOLIDADO_KARDEX.dbo.Logs (NombreSP,  Estado, FechaInicio)
+		VALUES ('SP_FR_VentasPorProducto', 'EN PROCESO', @Inicio)
+		
+		SET @IdLog = SCOPE_IDENTITY();
+        BEGIN TRAN;
         
 		DELETE 
         FROM CONSOLIDADO_KARDEX.dbo.VentasPorProducto
@@ -334,8 +339,25 @@ BEGIN
         PRINT '============================================';
         PRINT 'PROCESO COMPLETADO EXITOSAMENTE SIN ERRORES';
         PRINT '============================================';
-    END TRY
-    BEGIN CATCH
+
+		UPDATE CONSOLIDADO_KARDEX.dbo.Logs
+		SET
+			FechaFin = SYSDATETIME(),
+			Estado = 'OK'
+		WHERE id = @IdLog 
+
+	END TRY
+
+	BEGIN CATCH
+		UPDATE CONSOLIDADO_KARDEX.dbo.Logs
+		SET
+			FechaFin = SYSDATETIME(),
+			Estado = 'Error',
+			MensajeError = ERROR_MESSAGE(),
+			NumeroError = ERROR_NUMBER(),
+			LineaError = ERROR_LINE()
+		WHERE id = @IdLog
+		
         IF @@TRANCOUNT > 0 ROLLBACK;
         THROW;
     END CATCH

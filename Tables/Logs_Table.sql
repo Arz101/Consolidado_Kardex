@@ -1,0 +1,16 @@
+USE CONSOLIDADO_KARDEX
+
+GO
+
+CREATE TABLE [dbo].[Logs] (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    NombreSP SYSNAME NOT NULL,
+    Estado VARCHAR(10) NOT NULL,
+    FechaInicio DATETIME2 NULL,
+    FechaFin DATETIME2 NULL,
+    MensajeError NVARCHAR(MAX) NULL,
+    NumeroError INT NULL,
+    LineaError INT NULL
+);
+
+SELECT * FROM Logs

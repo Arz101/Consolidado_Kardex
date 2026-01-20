@@ -23,7 +23,14 @@ BEGIN
         RETURN;
     END;
 
-    BEGIN TRY
+	DECLARE @IdLog INT;
+	DECLARE @Inicio DATETIME2 = SYSDATETIME()
+
+	BEGIN TRY
+		INSERT INTO CONSOLIDADO_KARDEX.dbo.Logs (NombreSP,  Estado, FechaInicio)
+		VALUES ('SP_CONSOLIDADO_KARDEX', 'EN PROCESO', @Inicio)
+		
+		SET @IdLog = SCOPE_IDENTITY();
 
         RAISERROR('Iniciando SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
         RAISERROR(' ',0, 1) WITH NOWAIT;
@@ -88,8 +95,24 @@ BEGIN
         RAISERROR(' ',0, 1) WITH NOWAIT;
         RAISERROR('Proceso completo', 0, 1) WITH NOWAIT;
 
-    END TRY
-    BEGIN CATCH
+		UPDATE CONSOLIDADO_KARDEX.dbo.Logs
+		SET
+			FechaFin = SYSDATETIME(),
+			Estado = 'OK'
+		WHERE id = @IdLog 
+
+	END TRY
+
+	BEGIN CATCH
+		UPDATE CONSOLIDADO_KARDEX.dbo.Logs
+		SET
+			FechaFin = SYSDATETIME(),
+			Estado = 'Error',
+			MensajeError = ERROR_MESSAGE(),
+			NumeroError = ERROR_NUMBER(),
+			LineaError = ERROR_LINE()
+		WHERE id = @IdLog
+        
         DECLARE @msg NVARCHAR(4000) = ERROR_MESSAGE();
         RAISERROR(@msg, 16, 1) WITH NOWAIT;
         THROW;
