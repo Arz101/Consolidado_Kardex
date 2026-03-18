@@ -1,10 +1,13 @@
-USE CONSOLIDADO_KARDEX
+SET ANSI_NULLS ON
 GO
-CREATE OR ALTER  PROCEDURE [dbo].[SP_CONSOLIDADO_KARDEX]
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER    PROCEDURE [dbo].[SP_CONSOLIDADO_KARDEX]
 -- =============================================
 -- Author:		Adrian Rodriguez
 -- Create date: 2026-01-13
 -- Description:	Consolidado Kardex Peru
+-- Update date: 2026-03-17
 -- =============================================
 AS
 BEGIN
@@ -24,7 +27,38 @@ BEGIN
     END;
 
 	DECLARE @IdLog INT;
-	DECLARE @Inicio DATETIME2 = SYSDATETIME()
+        DECLARE @Inicio DATETIME2 = SYSDATETIME();
+        DECLARE @Errores INT = 0;
+        DECLARE @DetalleErrores NVARCHAR(MAX) = N'';
+        DECLARE @Orden INT;
+        DECLARE @TotalPasos INT;
+        DECLARE @NombreSP SYSNAME;
+        DECLARE @PasoInicio DATETIME2;
+        DECLARE @MensajePaso NVARCHAR(4000);
+        DECLARE @Sql NVARCHAR(MAX);
+        DECLARE @ErrorPaso NVARCHAR(4000);
+        DECLARE @ErrorGeneral NVARCHAR(4000);
+
+        DECLARE @Pasos TABLE (
+                Orden INT PRIMARY KEY,
+                NombreSP SYSNAME,
+                MensajeInicio NVARCHAR(200)
+        );
+
+        INSERT INTO @Pasos (Orden, NombreSP, MensajeInicio)
+        VALUES
+                (1, 'SP_Compras_Detalles_FR', 'Iniciando SP_Compras_Detalles_FR'),
+                (2, 'SP_EntradasSinClasificar_FR', 'Iniciando SP_EntradasSinClasificar_FR'),
+                (3, 'SP_FR_Compras', 'Iniciando SP_FR_Compras'),
+                (4, 'SP_FR_VentasPorProducto', 'Iniciando SP_FR_VentasPorProducto'),
+                (5, 'SP_InventarioMes_FR', 'Iniciando SP_InventarioMes_FR'),
+                (6, 'SP_PrecioTiendasCompras_FR', 'Iniciando SP_PrecioTiendasCompras_FR'),
+                (7, 'SP_SalidasSinClasificar_FR', 'Iniciando SP_SalidasSinClasificar_FR'),
+                (8, 'SP_Traslados_Salidas_FR', 'Iniciando SP_Traslados_Salidas_FR'),
+                (9, 'SP_TrasladosEntrastes_FR', 'Iniciando SP_TrasladosEntrastes_FR'),
+                (10, 'SP_PrecioTiendas', 'Iniciando SP_PrecioTiendas');
+
+        SET @TotalPasos = (SELECT COUNT(*) FROM @Pasos);
 
 	BEGIN TRY
 		INSERT INTO CONSOLIDADO_KARDEX.dbo.Logs (NombreSP,  Estado, FechaInicio)
@@ -32,65 +66,52 @@ BEGIN
 		
 		SET @IdLog = SCOPE_IDENTITY();
 
-        RAISERROR('Iniciando SP_Compras_Detalles_FR', 0, 1) WITH NOWAIT;
-        RAISERROR(' ',0, 1) WITH NOWAIT;
-        EXEC dbo.SP_Compras_Detalles_FR;
-        RAISERROR(' ',0, 1) WITH NOWAIT;
-        RAISERROR('***** Finalizó SP_Compras_Detalles_FR (1/10)*****', 0, 1) WITH NOWAIT;
+                SET @Orden = 1;
+                WHILE @Orden <= @TotalPasos
+                BEGIN
+                        SELECT
+                                @NombreSP = NombreSP,
+                                @MensajePaso = MensajeInicio
+                        FROM @Pasos
+                        WHERE Orden = @Orden;
 
-        RAISERROR('Iniciando SP_EntradasSinClasificar_FR', 0, 1) WITH NOWAIT;
-        RAISERROR(' ',0, 1) WITH NOWAIT;
-        EXEC dbo.SP_EntradasSinClasificar_FR;
-        RAISERROR(' ',0, 1) WITH NOWAIT;
-        RAISERROR('***** Finalizó SP_EntradasSinClasificar_FR (2/10) *****', 0, 1) WITH NOWAIT;
+                        RAISERROR(@MensajePaso, 0, 1) WITH NOWAIT;
+                        RAISERROR(' ', 0, 1) WITH NOWAIT;
+                        SET @PasoInicio = SYSDATETIME();
 
-        RAISERROR('Iniciando SP_FR_Compras', 0, 1) WITH NOWAIT;
-        RAISERROR(' ',0, 1) WITH NOWAIT;
-        EXEC dbo.SP_FR_Compras;
-        RAISERROR(' ',0, 1) WITH NOWAIT;
-        RAISERROR('***** Finalizó SP_FR_Compras (3/10) *****', 0, 1) WITH NOWAIT;
+                        BEGIN TRY
+                                SET @Sql = N'EXEC dbo.' + QUOTENAME(@NombreSP) + N';';
+                                EXEC sys.sp_executesql @Sql;
 
-        RAISERROR('Iniciando SP_FR_VentasPorProducto', 0, 1) WITH NOWAIT;
-        RAISERROR(' ',0, 1) WITH NOWAIT;
-        EXEC dbo.SP_FR_VentasPorProducto;
-        RAISERROR(' ',0, 1) WITH NOWAIT;
-        RAISERROR('***** Finalizó SP_FR_VentasPorProducto (4/10) *****', 0, 1) WITH NOWAIT;
+                                SET @MensajePaso = NULL;
+                                SELECT TOP (1)
+                                        @MensajePaso = MensajeError
+                                FROM CONSOLIDADO_KARDEX.dbo.Logs
+                                WHERE NombreSP = @NombreSP
+                                  AND FechaInicio >= @PasoInicio
+                                ORDER BY id DESC;
 
-        RAISERROR('Iniciando SP_InventarioMes_FR', 0, 1) WITH NOWAIT;
-                RAISERROR(' ',0, 1) WITH NOWAIT;
-        EXEC dbo.SP_InventarioMes_FR;
-                RAISERROR(' ',0, 1) WITH NOWAIT;
-        RAISERROR('***** Finalizó SP_InventarioMes_FR (5/10) *****', 0, 1) WITH NOWAIT;
+                                RAISERROR(' ', 0, 1) WITH NOWAIT;
+                                IF @MensajePaso IS NULL OR LTRIM(RTRIM(@MensajePaso)) = ''
+                                BEGIN
+                                        RAISERROR('***** Finalizó %s (%d/%d) *****', 0, 1, @NombreSP, @Orden, @TotalPasos) WITH NOWAIT;
+                                END
+                                ELSE
+                                BEGIN
+                                        SET @Errores += 1;
+                                        SET @DetalleErrores += @NombreSP + ': ' + @MensajePaso + '; ';
+                                        RAISERROR('***** Finalizó %s (%d/%d) con carga parcial *****', 0, 1, @NombreSP, @Orden, @TotalPasos) WITH NOWAIT;
+                                END
+                        END TRY
+                        BEGIN CATCH
+                                SET @ErrorPaso = ERROR_MESSAGE();
+                                SET @Errores += 1;
+                                SET @DetalleErrores += @NombreSP + ': ' + @ErrorPaso + '; ';
+                                RAISERROR('***** Error en %s (%d/%d): %s *****', 0, 1, @NombreSP, @Orden, @TotalPasos, @ErrorPaso) WITH NOWAIT;
+                        END CATCH;
 
-        RAISERROR('Iniciando SP_PrecioTiendasCompras_FR', 0, 1) WITH NOWAIT;
-                RAISERROR(' ',0, 1) WITH NOWAIT;
-        EXEC dbo.SP_PrecioTiendasCompras_FR;
-                RAISERROR(' ',0, 1) WITH NOWAIT;
-        RAISERROR('***** Finalizó SP_PrecioTiendasCompras_FR (6/10) *****', 0, 1) WITH NOWAIT;
-
-        RAISERROR('Iniciando SP_SalidasSinClasificar_FR', 0, 1) WITH NOWAIT;
-                RAISERROR(' ',0, 1) WITH NOWAIT;
-        EXEC dbo.SP_SalidasSinClasificar_FR;
-                RAISERROR(' ',0, 1) WITH NOWAIT;
-        RAISERROR('***** Finalizó SP_SalidasSinClasificar_FR (7/10) *****', 0, 1) WITH NOWAIT;
-
-        RAISERROR('Iniciando SP_Traslados_Salidas_FR', 0, 1) WITH NOWAIT;
-                RAISERROR(' ',0, 1) WITH NOWAIT;
-        EXEC dbo.SP_Traslados_Salidas_FR;
-                RAISERROR(' ',0, 1) WITH NOWAIT;
-        RAISERROR('***** Finalizó SP_Traslados_Salidas_FR (8/10) *****', 0, 1) WITH NOWAIT;
-
-        RAISERROR('Iniciando SP_TrasladosEntrastes_FR', 0, 1) WITH NOWAIT;
-                RAISERROR(' ',0, 1) WITH NOWAIT;
-        EXEC dbo.SP_TrasladosEntrastes_FR;
-                RAISERROR(' ',0, 1) WITH NOWAIT;
-        RAISERROR('***** Finalizó SP_TrasladosEntrastes_FR (9/10) *****', 0, 1) WITH NOWAIT;
-
-        RAISERROR('Iniciando SP_PrecioTiendas_FR', 0, 1) WITH NOWAIT;
-                RAISERROR(' ',0, 1) WITH NOWAIT;
-        EXEC dbo.SP_PrecioTiendas;
-                RAISERROR(' ',0, 1) WITH NOWAIT;
-        RAISERROR('***** Finalizó SP_TrasladosEntrastes_FR (10/10) *****', 0, 1) WITH NOWAIT;
+                        SET @Orden += 1;
+                END
 
         RAISERROR(' ',0, 1) WITH NOWAIT;
         RAISERROR('Proceso completo', 0, 1) WITH NOWAIT;
@@ -98,26 +119,30 @@ BEGIN
 		UPDATE CONSOLIDADO_KARDEX.dbo.Logs
 		SET
 			FechaFin = SYSDATETIME(),
-			Estado = 'OK'
+                        Estado = 'OK',
+                        MensajeError = CASE
+                                WHEN @Errores > 0 THEN LEFT('Carga parcial. Total errores: ' + CAST(@Errores AS VARCHAR(20)) + '. ' + @DetalleErrores, 4000)
+                                ELSE NULL
+                        END,
+                        NumeroError = NULL,
+                        LineaError = NULL
 		WHERE id = @IdLog 
 
 	END TRY
 
 	BEGIN CATCH
+                SET @ErrorGeneral = ERROR_MESSAGE();
 		UPDATE CONSOLIDADO_KARDEX.dbo.Logs
 		SET
 			FechaFin = SYSDATETIME(),
 			Estado = 'Error',
-			MensajeError = ERROR_MESSAGE(),
+                        MensajeError = @ErrorGeneral,
 			NumeroError = ERROR_NUMBER(),
 			LineaError = ERROR_LINE()
-		WHERE id = @IdLog
-        
-        DECLARE @msg NVARCHAR(4000) = ERROR_MESSAGE();
-        RAISERROR(@msg, 16, 1) WITH NOWAIT;
-        THROW;
+                WHERE id = @IdLog;
+
+                THROW;
     END CATCH
 END
 
 GO
-
